@@ -12,7 +12,7 @@ const connectDB = async (): Promise<void> => {
 
   try {
     await mongoose.connect(process.env.MONGODB_URI as string, {
-      dbName: "gemini-clone",
+      dbName: "devgemini",
       useNewUrlParser: true,
       useUnifiedTopology: true,
     } as ConnectOptions);
