@@ -49,4 +49,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     error: "/",
   },
   secret: process.env.NEXTAUTH_SECRET,
+  trustHost: true, // ✅ Fix for the "UntrustedHost" error
 });
