@@ -9,7 +9,7 @@ const page = async() => {
   const session=await auth()
   if(session) redirect("/app")
   return (
-    <section className='md:bg-[url("/assets/gemini-banner.png")] bg-[url("/assets/gemini-phone-banner.png")] bg-cover bg-no-repeat bg-center h-full w-full object-cover'>
+    <section className='md:bg-[url("/assets/gemini-banner.png")] bg-[url("/assets/gemini-phone-banner.png")] bg-cover bg-no-repeat bg-center h-full w-full'>
       <DevButton target='_blank' href='https://github.com/devyanshyadav/dev-gemini-clone' variant='v3' size='lg' asIcon rounded='full' className="text-4xl fixed top-4 right-4 text-white">
         <FaGithub />
       </DevButton>
