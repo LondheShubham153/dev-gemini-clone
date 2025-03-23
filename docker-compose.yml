@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  gemini:
+    build: .
+    container_name: gemini
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - gemini-network
+    depends_on:
+      - mongodb
+    restart: always
+
+  # Add MongoDB service
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - gemini-network
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=amitabhdevops2004
+      - MONGO_INITDB_ROOT_PASSWORD=R4XBQvrCzbDLCyDb
+
+volumes:
+  mongodb_data:
+
+networks:
+  gemini-network:
+    driver: bridge
