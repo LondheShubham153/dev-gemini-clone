@@ -43,7 +43,7 @@ next-env.d.ts
 *.tfstate.*
 .terraform.lock.hcl
 terraform/gemini-instance-key
-terraform/gemini-instance-key.pub
+# terraform/gemini-instance-key.pub
 
 ### VS Code ###
 .vscode/
