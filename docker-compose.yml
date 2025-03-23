@@ -19,7 +19,7 @@ services:
       # Base URL for the application
       - NEXTAUTH_URL=https://gemini.letsdeployit.com
       # Google API Key
-      - NEXT_PUBLIC_API_KEY=AIzaSyAarYFI4m-hIn1lOD7rkCAs7X2OxFL2wTw
+      - NEXT_PUBLIC_API_KEY=AIzaSyDatJJCoM_WOm43Pmv2GJtBnZFlqvGMECY
     volumes:
       - /app/node_modules
     networks:
