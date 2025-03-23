@@ -1,28 +1,28 @@
 # Exclude node modules from the host (they will be installed in the container)
-node_modules
+#node_modules
 
 # Exclude logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+#npm-debug.log*
+#yarn-debug.log*
+#yarn-error.log*
 
 # Exclude version control directories
-.git
-.gitignore
+#.git
+#.gitignore
 
 # Exclude environment files that may contain secrets
-.env
-.env.local
-.env.*.local
-.env.sample
+#.env
+#.env.local
+#.env.*.local
+#.env.sample
 
 # Exclude documentation and markdown files
-*.md
+#*.md
 
 # Exclude test directories and files
-tests
-coverage
+#tests
+#coverage
 
 # Exclude Docker-specific files (optional)
-Dockerfile
-.dockerignore
+#Dockerfile
+#.dockerignore
