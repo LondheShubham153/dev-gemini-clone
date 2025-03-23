@@ -26,9 +26,12 @@ services:
       - mongodb_data:/data/db
     networks:
       - gemini-network
-    env_file:
-      - .env.mongodb
-
+    #env_file:
+    #  - .env.mongodb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=amitabhdevops2004
+      - MONGO_INITDB_ROOT_PASSWORD=R4XBQvrCzbDLCyDb
+      
 volumes:
   mongodb_data:
 

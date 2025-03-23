@@ -33,7 +33,7 @@ variable "aws_ami_owners" {
 variable "aws_instance_storage_size" {
   description = "Specifies the size of the root block storage for the EC2 instance, in GB."
   type        = number
-  default     = 30
+  default     = 25
 }
 
 variable "aws_instance_volume_type" {
