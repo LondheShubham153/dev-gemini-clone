@@ -8,6 +8,9 @@ services:
       - "3000:3000"
     #env_file:
     #  - .env.local
+
+    # or 
+
     environment:
       # Google OAuth credentials
       - GOOGLE_ID=691564599482-9sgrhm8ef24b1jnoh1cjumdk9adolhch.apps.googleusercontent.com
@@ -40,6 +43,9 @@ services:
       - gemini-network
     #env_file:
     #  - .env.mongodb
+
+    # or  
+
     environment:
       - MONGO_INITDB_ROOT_USERNAME=amitabhdevops2004
       - MONGO_INITDB_ROOT_PASSWORD=R4XBQvrCzbDLCyDb
