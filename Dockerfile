@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Remove development dependencies to reduce image size
-RUN npm prune --production
+# RUN npm prune --production
 
 
 ##################################
