@@ -9,7 +9,7 @@ variable "aws_region" {
 variable "aws_instance_type" {
   description = "Defines the type of EC2 instance to be created (e.g., t2.micro, t3.small)."
   type        = string
-  default     = "t2.medium"
+  default     = "t2.large"
 }
 
 variable "aws_instance_name" {
@@ -33,7 +33,7 @@ variable "aws_ami_owners" {
 variable "aws_instance_storage_size" {
   description = "Specifies the size of the root block storage for the EC2 instance, in GB."
   type        = number
-  default     = 25
+  default     = 30
 }
 
 variable "aws_instance_volume_type" {

@@ -66,6 +66,13 @@ resource "aws_security_group" "terraform_sg" {
         protocol    = var.https_protocol
         cidr_blocks = [var.https_cidr]
     }
+    ingress {
+        description = "Allow access to SonarQube port 9000"
+        from_port   = 9000  
+        to_port     = 9000
+        protocol    = var.https_protocol
+        cidr_blocks = [var.https_cidr]
+    }
 
     egress {
         description = "Allow all outgoing traffic"
