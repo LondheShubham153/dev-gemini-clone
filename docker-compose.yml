@@ -6,23 +6,9 @@ services:
     container_name: gemini
     ports:
       - "3000:3000"
-    #env_file:
-    #  - .env.local
+    env_file:
+      - .env.local
 
-    # or 
-
-    environment:
-      # Google OAuth credentials
-      - GOOGLE_ID=691564599482-9sgrhm8ef24b1jnoh1cjumdk9adolhch.apps.googleusercontent.com
-      - GOOGLE_SECRET=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
-      # MongoDB connection string
-      - MONGODB_URI=mongodb+srv://amitabhdevops2004:R4XBQvrCzbDLCyDb@devgemini.7veo5.mongodb.net/
-      # NextAuth secret
-      - NEXTAUTH_SECRET=BLUvkGUOznUvS5qzirrMa7Ualgn47+BPNIeLAsYaBfc=
-      # Base URL for the application
-      - NEXTAUTH_URL=https://geminiapp.letsdeployit.com
-      # Google API Key
-      - NEXT_PUBLIC_API_KEY=AIzaSyCxdUkckt1X1PWVoF7xCcMFQzN8VGgGnA8
     volumes:
       - /app/node_modules
     networks:
@@ -41,14 +27,8 @@ services:
       - mongodb_data:/data/db
     networks:
       - gemini-network
-    #env_file:
-    #  - .env.mongodb
-
-    # or  
-
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=amitabhdevops2004
-      - MONGO_INITDB_ROOT_PASSWORD=R4XBQvrCzbDLCyDb
+    env_file:
+      - .env.mongodb
       
 volumes:
   mongodb_data:
