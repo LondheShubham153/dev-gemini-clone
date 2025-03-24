@@ -20,9 +20,9 @@ services:
       # NextAuth secret
       - NEXTAUTH_SECRET=BLUvkGUOznUvS5qzirrMa7Ualgn47+BPNIeLAsYaBfc=
       # Base URL for the application
-      - NEXTAUTH_URL=https://gemini.letsdeployit.com
+      - NEXTAUTH_URL=https://geminiapp.letsdeployit.com
       # Google API Key
-      - NEXT_PUBLIC_API_KEY=AIzaSyDatJJCoM_WOm43Pmv2GJtBnZFlqvGMECY
+      - NEXT_PUBLIC_API_KEY=AIzaSyCxdUkckt1X1PWVoF7xCcMFQzN8VGgGnA8
     volumes:
       - /app/node_modules
     networks:
