@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ingress-headers
-  namespace: bankapp-namespace
+  namespace: gemini-ns
 data:
   X-Forwarded-Host: "$host"
   X-Forwarded-Proto: "$scheme"
