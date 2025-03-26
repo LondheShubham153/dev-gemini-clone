@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gemini-ns
+  labels:
+    name: gemini-ns
