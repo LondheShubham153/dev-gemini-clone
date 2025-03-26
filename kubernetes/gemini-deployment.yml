@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gemini
-  namespace: gemini-ns
+  namespace: gemini-namespace
   labels:
     app: gemini
 spec:
