@@ -6,11 +6,11 @@ metadata:
   labels:
     app: gemini
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: gemini
   ports:
   - protocol: TCP
     port: 3000
     targetPort: 3000
-    #nodePort: 30080
+    # nodePort is auto-assigned (e.g., 30194)
