@@ -28,7 +28,7 @@ spec:
           service:
             name: gemini-service
             port:
-              number: 8080
+              number: 3000
       - path: /nginx
         pathType: Prefix
         backend:
