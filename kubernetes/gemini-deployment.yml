@@ -53,11 +53,8 @@ spec:
             configMapKeyRef:
               name: gemini-config
               key: NEXTAUTH_URL
-        # - name: NEXT_PUBLIC_API_KEY
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: gemini-secret
-        #       key: NEXT_PUBLIC_API_KEY
-        # Here is the direct environment variable:
         - name: NEXT_PUBLIC_API_KEY
-          value: "AIzaSyAXT7ujxSvSdz_C2IGl9udN6jmK4uiEtOE"
+          valueFrom:
+            secretKeyRef:
+              name: gemini-secret
+              key: NEXT_PUBLIC_API_KEY
