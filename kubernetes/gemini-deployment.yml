@@ -60,4 +60,4 @@ spec:
         #       key: NEXT_PUBLIC_API_KEY
         # Here is the direct environment variable:
         - name: NEXT_PUBLIC_API_KEY
-          value: "AIzaSyBa0Yif4RJePCEhLbI4yUNbtPJz5BzarqE"
+          value: "AIzaSyAXT7ujxSvSdz_C2IGl9udN6jmK4uiEtOE"
