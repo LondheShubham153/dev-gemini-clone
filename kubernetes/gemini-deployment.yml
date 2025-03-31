@@ -17,8 +17,7 @@ spec:
     spec:
       containers:
       - name: gemini
-        image: gemini:latest  # Use the locally built image
-        imagePullPolicy: Never  # Prevent Kubernetes from pulling from a registry
+        image: amitabhdevops/geminiapp
         ports:
         - containerPort: 3000
         resources:
