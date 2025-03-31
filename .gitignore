@@ -48,5 +48,4 @@ terraform/gemini-instance-key.pub
 ### VS Code ###
 .vscode/
 
-
-
+guide-for-gemini-app-k8s.md
