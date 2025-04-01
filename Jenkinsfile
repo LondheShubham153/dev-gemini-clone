@@ -21,14 +21,15 @@ pipeline {
                 echo "Code cloning done."
             }
         }
-        stage("Exporting Next_Public_API_Key") {
+        stage("Exporting NEXT_PUBLIC_API_KEY") {
             steps {
-            sh """
-                export NEXT_PUBLIC_API_KEY='${env.NEXT_PUBLIC_API_KEY}'
-            """
-            echo "Exporting Next_Public_API_Key done."
+                withCredentials([string(credentialsId: 'NEXT_PUBLIC_API_KEY', variable: 'NEXT_PUBLIC_API_KEY')]) {
+                    sh 'export NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY}'
+                    echo "Exporting NEXT_PUBLIC_API_KEY done."
+                }
             }
         }
+
         stage("Build") {                                                             
             steps {
                 dockerbuild("geminiai","latest")
