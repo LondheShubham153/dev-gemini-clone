@@ -1,13 +1,13 @@
 @Library('Shared')_
 
 pipeline {
-    agent any
+    agent { label 'dev-server' }
     
     environment {
         SONAR_HOME = tool "Sonar"
-        DOCKER_IMAGE  = "gemini"
+        DOCKER_IMAGE  = "geminiai"
         GIT_REPO      = "https://github.com/Amitabh-DevOps/dev-gemini-clone.git"
-        GIT_BRANCH    = "main"
+        GIT_BRANCH    = "DevOps"
     }
     stages {
         stage("Clean Workspace") {
@@ -17,19 +17,19 @@ pipeline {
         }
         stage("Code") {
             steps {
-                clone("https://github.com/Amitabh-DevOps/dev-gemini-clone.git","main")
+                clone("https://github.com/Amitabh-DevOps/dev-gemini-clone.git","DevOps")
                 echo "Code cloning done."
             }
         }
         stage("Build") {                                                             
             steps {
-                dockerbuild("gemini","latest")
+                dockerbuild("geminiai","latest")
                 echo "Code build done."
             }
         }
         stage("SonarQube Quality Analysis") {
             steps {
-                sonarqube_analysis('Sonar', 'gemini', 'gemini')
+                sonarqube_analysis('Sonar', 'geminiai', 'geminiai')
             }
         }
         stage("OWASP : Dependency Check") {
@@ -46,24 +46,24 @@ pipeline {
             steps {
                 // Scan the Docker image with Trivy using a shared library function.
                 // The options can be customized to specify severity levels, etc.
-                dockerScanTrivy("gemini", "latest")
+                dockerScanTrivy("geminiai", "latest")
                 echo "Trivy scan completed."
             }
         }
         stage("Push to DockerHub") {
             steps {
-                dockerpush("dockerHub","gemini","latest")
+                dockerpush("dockerHub","geminiai","latest")
                 echo "Push to DockerHub done."
             }
         }
-        stage("Run Container") {
-            steps {
-                // Call the shared library function
-                // Parameters: image, tag, credential ID for .env.local, container name, and docker run options.
-                dockerRunApp("gemini", "latest", "env_local", "gemini", "--env-file .env.local -p 3000:3000")
-                echo "Container started using .env.local file with container name 'gemini'."
-            }
-        }
+        // stage("Run Container") {
+        //     steps {
+        //         // Call the shared library function
+        //         // Parameters: image, tag, credential ID for .env.local, container name, and docker run options.
+        //         dockerRunApp("gemini", "latest", "env_local", "gemini", "--env-file .env.local -p 3000:3000")
+        //         echo "Container started using .env.local file with container name 'gemini'."
+        //     }
+        // }
     }
     post {
         success {
