@@ -26,7 +26,8 @@ pipeline {
         stage("Build") {                                                             
             steps {
                 withEnv(["NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY}"]) {
-                    dockerbuild("geminiai", "latest")
+                    sh 'echo "NEXT_PUBLIC_API_KEY is: $NEXT_PUBLIC_API_KEY"' // Debug
+                    dockerbuild("${DOCKER_IMAGE}", "latest")
                 }
                 echo "Code build done."
             }
