@@ -8,6 +8,7 @@ pipeline {
         DOCKER_IMAGE  = "geminiai"
         GIT_REPO      = "https://github.com/Amitabh-DevOps/dev-gemini-clone.git"
         GIT_BRANCH    = "DevOps"
+        NEXT_PUBLIC_API_KEY = credentials('NEXT_PUBLIC_API_KEY')
     }
     stages {
         stage("Clean Workspace") {
@@ -21,18 +22,12 @@ pipeline {
                 echo "Code cloning done."
             }
         }
-        stage("Exporting NEXT_PUBLIC_API_KEY") {
-            steps {
-                withCredentials([string(credentialsId: 'NEXT_PUBLIC_API_KEY', variable: 'NEXT_PUBLIC_API_KEY')]) {
-                    sh 'export NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY}'
-                    echo "Exporting NEXT_PUBLIC_API_KEY done."
-                }
-            }
-        }
 
         stage("Build") {                                                             
             steps {
-                dockerbuild("geminiai","latest")
+                withEnv(["NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY}"]) {
+                    dockerbuild("geminiai", "latest")
+                }
                 echo "Code build done."
             }
         }
