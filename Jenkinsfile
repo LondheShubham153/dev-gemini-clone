@@ -5,7 +5,7 @@ pipeline {
     
     environment {
         SONAR_HOME = tool "Sonar"
-        DOCKER_IMAGE  = "geminiai"
+        DOCKER_IMAGE  = "geminidev"
         GIT_REPO      = "https://github.com/Amitabh-DevOps/dev-gemini-clone.git"
         GIT_BRANCH    = "DevOps"
         DOCKERHUB_USERNAME = "amitabhdevops"
@@ -34,7 +34,7 @@ pipeline {
         }
         stage("SonarQube Quality Analysis") {
             steps {
-                sonarqube_analysis('Sonar', 'geminiai', 'geminiai')
+                sonarqube_analysis('Sonar', 'geminidev', 'geminidev')
             }
         }
         stage("OWASP : Dependency Check") {
@@ -51,13 +51,13 @@ pipeline {
             steps {
                 // Scan the Docker image with Trivy using a shared library function.
                 // The options can be customized to specify severity levels, etc.
-                dockerScanTrivy("geminiai", "latest")
+                dockerScanTrivy("geminidev", "latest")
                 echo "Trivy scan completed."
             }
         }
         stage("Push to DockerHub") {
             steps {
-                dockerpush("dockerHub","geminiai","latest")
+                dockerpush("dockerHub","geminidev","latest")
                 echo "Push to DockerHub done."
             }
         }
