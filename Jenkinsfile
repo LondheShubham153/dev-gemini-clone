@@ -8,6 +8,7 @@ pipeline {
         DOCKER_IMAGE  = "geminiai"
         GIT_REPO      = "https://github.com/Amitabh-DevOps/dev-gemini-clone.git"
         GIT_BRANCH    = "DevOps"
+        DOCKERHUB_USERNAME = "amitabhdevops"
         NEXT_PUBLIC_API_KEY = credentials('NEXT_PUBLIC_API_KEY')
     }
     stages {
@@ -74,6 +75,7 @@ pipeline {
                 script {
                     // Remove the specific image built in this pipeline
                     sh "docker rmi ${DOCKER_IMAGE}:latest || true"
+                    sh "docker rmi ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:latest || true"
                     // Remove all unused (dangling) images
                     sh "docker image prune -f"
                     // sh "docker system prune -f || true"
