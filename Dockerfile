@@ -5,18 +5,14 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Define build argument for the API key
-ARG NEXT_PUBLIC_API_KEY
-# Set the environment variable for the build process
-ENV NEXT_PUBLIC_API_KEY=$NEXT_PUBLIC_API_KEY
-
 # Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the code and build Next.js
 COPY . .
-RUN npm run build
+# The NEXT_PUBLIC_API_KEY will be provided via the build command in Jenkins
+RUN NEXT_PUBLIC_API_KEY=$NEXT_PUBLIC_API_KEY npm run build
 
 ##################################
 # Stage 2: Production Stage
