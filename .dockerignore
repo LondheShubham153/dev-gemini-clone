@@ -1,28 +1,46 @@
-# Exclude node modules from the host (they will be installed in the container)
-#node_modules
+# Node.js specific
+node_modules
+npm-debug.log
+yarn-error.log
+*.log
 
-# Exclude logs
-#npm-debug.log*
-#yarn-debug.log*
-#yarn-error.log*
+# Git
+.git
+.gitignore
 
-# Exclude version control directories
-#.git
-#.gitignore
-
-# Exclude environment files that may contain secrets
+# Environment files (commented it because they app needs NEXT_PUBLIC_API_KEY at build time, if uncommented, then applicatoin will show INVALID_API_KEY error in browser console when you enter the prompt to gemini clone)
 #.env
 #.env.local
-#.env.*.local
-#.env.sample
+#.env.development
+#.env.test
+#.env.production
 
-# Exclude documentation and markdown files
-#*.md
+# Build output and caches
+.next
+dist
+build
+*.cache
 
-# Exclude test directories and files
-#tests
-#coverage
+# Tests and test-related files
+tests
+__tests__
+*.test.js
+*.spec.js
+coverage
 
-# Exclude Docker-specific files (optional)
-#Dockerfile
-#.dockerignore
+# Documentation
+*.md
+README.md
+LICENSE
+
+# Editor and IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Miscellaneous
+Dockerfile
+docker-compose.yml
+*.bak
+*.tmp
