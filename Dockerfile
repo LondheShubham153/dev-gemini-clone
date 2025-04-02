@@ -11,8 +11,7 @@ RUN npm install
 
 # Copy the rest of the code and build Next.js
 COPY . .
-# The NEXT_PUBLIC_API_KEY will be provided via the build command in Jenkins
-RUN NEXT_PUBLIC_API_KEY=$NEXT_PUBLIC_API_KEY npm run build
+RUN npm run build
 
 ##################################
 # Stage 2: Production Stage

@@ -9,6 +9,7 @@ pipeline {
         GIT_REPO      = "https://github.com/Amitabh-DevOps/dev-gemini-clone.git"
         GIT_BRANCH    = "DevOps"
         DOCKERHUB_USERNAME = "amitabhdevops"
+        // Securely retrieve NEXT_PUBLIC_API_KEY from Jenkins credentials
         NEXT_PUBLIC_API_KEY = credentials('NEXT_PUBLIC_API_KEY')
     }
     stages {
@@ -26,7 +27,8 @@ pipeline {
 
         stage("Build") {
             steps {
-                dockerBuildEnv("${DOCKER_IMAGE}", "latest")
+                // Pass the NEXT_PUBLIC_API_KEY environment variable to dockerbuild
+                dockerBuildEnv("${DOCKER_IMAGE}", "latest", "", "${NEXT_PUBLIC_API_KEY}")
                 echo "Code build done."
             }
         }
