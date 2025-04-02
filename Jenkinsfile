@@ -69,6 +69,18 @@ pipeline {
         //         echo "Container started using .env.local file with container name 'gemini'."
         //     }
         // }
+        stage("Cleanup Docker Images") {
+            steps {
+                script {
+                    // Remove the specific image built in this pipeline
+                    sh "docker rmi ${DOCKER_IMAGE}:latest || true"
+                    // Remove all unused (dangling) images
+                    sh "docker image prune -f"
+                    // sh "docker system prune -f || true"
+                }
+                echo "Docker images cleaned up."
+            }
+        }
     }
     post {
         success {
