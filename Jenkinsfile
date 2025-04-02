@@ -24,12 +24,9 @@ pipeline {
             }
         }
 
-        stage("Build") {                                                             
+        stage("Build") {
             steps {
-                withEnv(["NEXT_PUBLIC_API_KEY=${NEXT_PUBLIC_API_KEY}"]) {
-                    sh 'echo "NEXT_PUBLIC_API_KEY is: $NEXT_PUBLIC_API_KEY"' // Debug
-                    dockerbuild("${DOCKER_IMAGE}", "latest")
-                }
+                dockerBuildEnv("${DOCKER_IMAGE}", "latest")
                 echo "Code build done."
             }
         }
