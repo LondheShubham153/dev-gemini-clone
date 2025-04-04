@@ -84,9 +84,9 @@ pipeline {
     post {
         success {
             echo "Pipeline completed successfully!"
-            // build job: "Gemini-CD", parameters: [
-            //     string(name: 'GEMINI_DOCKER_TAG', value: "${params.GEMINI_DOCKER_TAG}")
-            // ]
+            build job: "Gemini-CD", parameters: [
+                string(name: 'GEMINI_DOCKER_TAG', value: "${params.GEMINI_DOCKER_TAG}")
+            ]
             emailext (
                 subject: "SUCCESS: Jenkins Pipeline for ${DOCKER_IMAGE}",
                 body: """
