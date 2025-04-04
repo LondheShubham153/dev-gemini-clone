@@ -84,10 +84,11 @@ pipeline {
     }
     post {
         success {
-            echo "Pipeline completed successfully!"
+            archiveArtifacts artifacts: 'kubernetes/gemini-deployment.yml', followSymlinks: false
             build job: "Gemini-CD", parameters: [
                 string(name: 'GEMINI_DOCKER_TAG', value: "${params.GEMINI_DOCKER_TAG}")
             ]
+            echo "Pipeline completed successfully!"
             emailext (
                 subject: "SUCCESS: Jenkins Pipeline for ${DOCKER_IMAGE}",
                 body: """
