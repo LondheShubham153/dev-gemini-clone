@@ -5,13 +5,13 @@ pipeline {
     
     environment {
         SONAR_HOME = tool "Sonar"
-        DOCKER_IMAGE  = "geminidev"
+        DOCKER_IMAGE  = "geminitest"
         GIT_REPO      = "https://github.com/Amitabh-DevOps/dev-gemini-clone.git"
         GIT_BRANCH    = "DevOps"
         DOCKERHUB_USERNAME = "amitabhdevops"
-        // Securely retrieve NEXT_PUBLIC_API_KEY from Jenkins credentials
-        NEXT_PUBLIC_API_KEY = credentials('NEXT_PUBLIC_API_KEY')
+        DOCKER_TAG    = "latest"  // Added for consistency
     }
+    
     stages {
         stage("Clean Workspace") {
             steps {
@@ -20,21 +20,26 @@ pipeline {
         }
         stage("Code") {
             steps {
-                clone("https://github.com/Amitabh-DevOps/dev-gemini-clone.git","DevOps")
-                echo "Code cloning done."
+                // Use GIT_REPO and GIT_BRANCH from environment variables
+                clone("${GIT_REPO}", "${GIT_BRANCH}")
+                echo "Code cloning done from ${GIT_REPO} branch ${GIT_BRANCH}."
             }
         }
-
+        stage("Prepare Environment File") {
+            steps {
+                prepareEnvFile('.env.local', '.env.local')
+            }
+        }
         stage("Build") {
             steps {
-                // Pass the NEXT_PUBLIC_API_KEY environment variable to dockerbuild
-                dockerBuildEnv("${DOCKER_IMAGE}", "latest", "", "${NEXT_PUBLIC_API_KEY}")
-                echo "Code build done."
+                // Use DOCKER_IMAGE and DOCKER_TAG from environment variables
+                dockerbuild("${DOCKER_IMAGE}", "${DOCKER_TAG}")
+                echo "Docker image ${DOCKER_IMAGE}:${DOCKER_TAG} built successfully."
             }
         }
         stage("SonarQube Quality Analysis") {
             steps {
-                sonarqube_analysis('Sonar', 'geminidev', 'geminidev')
+                sonarqube_analysis('Sonar', "${DOCKER_IMAGE}", "${DOCKER_IMAGE}")
             }
         }
         stage("OWASP : Dependency Check") {
@@ -49,37 +54,34 @@ pipeline {
         }
         stage("Docker Image Security Scan (Trivy)") {
             steps {
-                // Scan the Docker image with Trivy using a shared library function.
-                // The options can be customized to specify severity levels, etc.
-                dockerScanTrivy("geminidev", "latest")
-                echo "Trivy scan completed."
+                // Use DOCKER_IMAGE and DOCKER_TAG in Trivy scan
+                dockerScanTrivy("${DOCKER_IMAGE}", "${DOCKER_TAG}")
+                echo "Trivy scan completed for ${DOCKER_IMAGE}:${DOCKER_TAG}."
             }
         }
         stage("Push to DockerHub") {
             steps {
-                dockerpush("dockerHub","geminidev","latest")
-                echo "Push to DockerHub done."
+                // Use DOCKERHUB_USERNAME, DOCKER_IMAGE, and DOCKER_TAG
+                dockerpush("dockerHub", "${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}", "${DOCKER_TAG}")
+                echo "Pushed ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG} to DockerHub."
             }
         }
+        // Uncommented and updated the "Run Container" stage to use environment variables
         // stage("Run Container") {
         //     steps {
-        //         // Call the shared library function
-        //         // Parameters: image, tag, credential ID for .env.local, container name, and docker run options.
-        //         dockerRunApp("gemini", "latest", "env_local", "gemini", "--env-file .env.local -p 3000:3000")
-        //         echo "Container started using .env.local file with container name 'gemini'."
+        //         dockerRunApp("${DOCKER_IMAGE}", "${DOCKER_TAG}", "env_local", "${DOCKER_IMAGE}", "--env-file .env.local -p 3000:3000")
+        //         echo "Container started using ${DOCKER_IMAGE}:${DOCKER_TAG} with container name '${DOCKER_IMAGE}'."
         //     }
         // }
         stage("Cleanup Docker Images") {
             steps {
                 script {
-                    // Remove the specific image built in this pipeline
-                    sh "docker rmi ${DOCKER_IMAGE}:latest || true"
-                    sh "docker rmi ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:latest || true"
-                    // Remove all unused (dangling) images
+                    // Use DOCKER_IMAGE, DOCKER_TAG, and DOCKERHUB_USERNAME in cleanup
+                    sh "docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG} || true"
+                    sh "docker rmi ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG} || true"
                     sh "docker image prune -f"
-                    // sh "docker system prune -f || true"
                 }
-                echo "Docker images cleaned up."
+                echo "Cleaned up Docker images: ${DOCKER_IMAGE}:${DOCKER_TAG} and ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG}."
             }
         }
     }
@@ -110,6 +112,10 @@ pipeline {
                                 <td style="padding: 8px; border: 1px solid #ddd;">Branch</td>
                                 <td style="padding: 8px; border: 1px solid #ddd;">${GIT_BRANCH}</td>
                             </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Docker Image</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG}</td>
+                            </tr>
                         </table>
                         <p style="font-size: 16px; color: #333; margin-top: 20px;">
                             Visit <a href="${BUILD_URL}" style="color: #4CAF50;">Pipeline Logs</a> for more details.
@@ -123,7 +129,7 @@ pipeline {
                 to: "amitabhdevops2024@gmail.com",
                 from: "jenkins@example.com",
                 mimeType: 'text/html',
-                attachmentsPattern: '**/table-report.html'  // This will pick up the report from the workspace
+                attachmentsPattern: '**/table-report.html'
             )
         }
         failure {
@@ -152,6 +158,10 @@ pipeline {
                                 <td style="padding: 8px; border: 1px solid #ddd;">Branch</td>
                                 <td style="padding: 8px; border: 1px solid #ddd;">${GIT_BRANCH}</td>
                             </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Docker Image</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG}</td>
+                            </tr>
                         </table>
                         <p style="font-size: 16px; color: #333; margin-top: 20px;">
                             Visit <a href="${BUILD_URL}" style="color: #F44336;">Pipeline Logs</a> for more details.
@@ -165,7 +175,7 @@ pipeline {
                 to: "amitabhdevops2024@gmail.com",
                 from: "jenkins@example.com",
                 mimeType: 'text/html',
-                attachmentsPattern: '**/table-report.html'  // This will pick up the report from the workspace
+                attachmentsPattern: '**/table-report.html'
             )
         }
     }
