@@ -5,13 +5,14 @@ pipeline {
     
     environment {
         SONAR_HOME = tool "Sonar"
-        DOCKER_IMAGE  = "geminitest"
+        DOCKER_IMAGE  = "geminiai"
         GIT_REPO      = "https://github.com/Amitabh-DevOps/dev-gemini-clone.git"
         GIT_BRANCH    = "DevOps"
         DOCKERHUB_USERNAME = "amitabhdevops"
-        DOCKER_TAG    = "latest"  // Added for consistency
     }
-    
+    parameters {
+        string(name: 'GEMINI_DOCKER_TAG', defaultValue: 'v1', description: 'Setting docker image for latest push')
+    }
     stages {
         stage("Clean Workspace") {
             steps {
@@ -32,9 +33,8 @@ pipeline {
         }
         stage("Build") {
             steps {
-                // Use DOCKER_IMAGE and DOCKER_TAG from environment variables
-                dockerbuild("${DOCKER_IMAGE}", "${DOCKER_TAG}")
-                echo "Docker image ${DOCKER_IMAGE}:${DOCKER_TAG} built successfully."
+                dockerbuild("${DOCKER_IMAGE}", "${params.GEMINI_DOCKER_TAG}")
+                echo "Docker image ${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG} built successfully."
             }
         }
         stage("SonarQube Quality Analysis") {
@@ -54,16 +54,14 @@ pipeline {
         }
         stage("Docker Image Security Scan (Trivy)") {
             steps {
-                // Use DOCKER_IMAGE and DOCKER_TAG in Trivy scan
-                dockerScanTrivy("${DOCKER_IMAGE}", "${DOCKER_TAG}")
-                echo "Trivy scan completed for ${DOCKER_IMAGE}:${DOCKER_TAG}."
+                dockerScanTrivy("${DOCKER_IMAGE}", "${params.GEMINI_DOCKER_TAG}")
+                echo "Trivy scan completed for ${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG}."
             }
         }
         stage("Push to DockerHub") {
             steps {
-                // Use DOCKERHUB_USERNAME, DOCKER_IMAGE, and DOCKER_TAG
-                dockerpush("dockerHub", "${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}", "${DOCKER_TAG}")
-                echo "Pushed ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG} to DockerHub."
+                dockerpush("dockerHub", "${DOCKER_IMAGE}", "${params.GEMINI_DOCKER_TAG}")
+                echo "Pushed ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG} to DockerHub."
             }
         }
         // Uncommented and updated the "Run Container" stage to use environment variables
@@ -76,18 +74,19 @@ pipeline {
         stage("Cleanup Docker Images") {
             steps {
                 script {
-                    // Use DOCKER_IMAGE, DOCKER_TAG, and DOCKERHUB_USERNAME in cleanup
-                    sh "docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG} || true"
-                    sh "docker rmi ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG} || true"
+                    sh "docker rmi ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG} || true"
                     sh "docker image prune -f"
                 }
-                echo "Cleaned up Docker images: ${DOCKER_IMAGE}:${DOCKER_TAG} and ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG}."
+                echo "Cleaned up Docker image: ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG}."
             }
         }
     }
     post {
         success {
             echo "Pipeline completed successfully!"
+            build job: "Gemini-CD", parameters: [
+                string(name: 'GEMINI_DOCKER_TAG', value: "${params.GEMINI_DOCKER_TAG}")
+            ]
             emailext (
                 subject: "SUCCESS: Jenkins Pipeline for ${DOCKER_IMAGE}",
                 body: """
@@ -114,7 +113,7 @@ pipeline {
                             </tr>
                             <tr>
                                 <td style="padding: 8px; border: 1px solid #ddd;">Docker Image</td>
-                                <td style="padding: 8px; border: 1px solid #ddd;">${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG}</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG}</td>
                             </tr>
                         </table>
                         <p style="font-size: 16px; color: #333; margin-top: 20px;">
@@ -160,7 +159,7 @@ pipeline {
                             </tr>
                             <tr>
                                 <td style="padding: 8px; border: 1px solid #ddd;">Docker Image</td>
-                                <td style="padding: 8px; border: 1px solid #ddd;">${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${DOCKER_TAG}</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG}</td>
                             </tr>
                         </table>
                         <p style="font-size: 16px; color: #333; margin-top: 20px;">
