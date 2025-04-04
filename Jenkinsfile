@@ -74,6 +74,7 @@ pipeline {
         stage("Cleanup Docker Images") {
             steps {
                 script {
+                    sh "docker rmi ${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG} || true"
                     sh "docker rmi ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG} || true"
                     sh "docker image prune -f"
                 }
