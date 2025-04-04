@@ -15,11 +15,11 @@ metadata:
 spec:
   tls:
   - hosts:
-    - geminiai.letsdeployit.com
+    - geminidev.letsdeployit.com
     secretName: gemini-tls-secret
   ingressClassName: nginx
   rules:
-  - host: "geminiai.letsdeployit.com"
+  - host: "geminidev.letsdeployit.com"
     http:
       paths:
       - path: /
