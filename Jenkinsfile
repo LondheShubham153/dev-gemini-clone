@@ -98,7 +98,7 @@ pipeline {
                             Hello Team,
                         </p>
                         <p style="font-size: 16px; color: #333;">
-                            The Jenkins pipeline for <strong style="color: #4CAF50;">${DOCKER_IMAGE}</strong> completed <strong style="color: #4CAF50;">successfully</strong>!
+                            The Jenkins CI pipeline for <strong style="color: #4CAF50;">${DOCKER_IMAGE}</strong> completed <strong style="color: #4CAF50;">successfully</strong>!
                         </p>
                         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                             <tr style="background-color: #f2f2f2;">
@@ -144,7 +144,7 @@ pipeline {
                             Hello Team,
                         </p>
                         <p style="font-size: 16px; color: #333;">
-                            Unfortunately, the Jenkins pipeline for <strong style="color: #F44336;">${DOCKER_IMAGE}</strong> has <strong style="color: #F44336;">failed</strong>.
+                            Unfortunately, the Jenkins CI pipeline for <strong style="color: #F44336;">${DOCKER_IMAGE}</strong> has <strong style="color: #F44336;">failed</strong>.
                         </p>
                         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                             <tr style="background-color: #f2f2f2;">
