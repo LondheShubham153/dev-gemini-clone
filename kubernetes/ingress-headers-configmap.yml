@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: ingress-headers
-  namespace: gemini-namespace
+  namespace: gemini-namespace1
 data:
   X-Forwarded-Host: "$host"
   X-Forwarded-Proto: "$scheme"
