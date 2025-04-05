@@ -1,13 +1,17 @@
 @Library('Shared')_
 
 pipeline {
-    agent any
+    agent { label 'dev-server' }
     
     environment {
         SONAR_HOME = tool "Sonar"
-        DOCKER_IMAGE  = "gemini"
+        DOCKER_IMAGE  = "geminiai"
         GIT_REPO      = "https://github.com/Amitabh-DevOps/dev-gemini-clone.git"
-        GIT_BRANCH    = "main"
+        GIT_BRANCH    = "DevOps"
+        DOCKERHUB_USERNAME = "amitabhdevops"
+    }
+    parameters {
+        string(name: 'GEMINI_DOCKER_TAG', defaultValue: 'v1', description: 'Setting docker image for latest push')
     }
     stages {
         stage("Clean Workspace") {
@@ -17,19 +21,25 @@ pipeline {
         }
         stage("Code") {
             steps {
-                clone("https://github.com/Amitabh-DevOps/dev-gemini-clone.git","main")
-                echo "Code cloning done."
+                // Use GIT_REPO and GIT_BRANCH from environment variables
+                clone("${GIT_REPO}", "${GIT_BRANCH}")
+                echo "Code cloning done from ${GIT_REPO} branch ${GIT_BRANCH}."
             }
         }
-        stage("Build") {                                                             
+        stage("Prepare Environment File") {
             steps {
-                dockerbuild("gemini","latest")
-                echo "Code build done."
+                prepareEnvFile('.env.local', '.env.local')
+            }
+        }
+        stage("Build") {
+            steps {
+                dockerbuild("${DOCKER_IMAGE}", "${params.GEMINI_DOCKER_TAG}")
+                echo "Docker image ${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG} built successfully."
             }
         }
         stage("SonarQube Quality Analysis") {
             steps {
-                sonarqube_analysis('Sonar', 'gemini', 'gemini')
+                sonarqube_analysis('Sonar', "${DOCKER_IMAGE}", "${DOCKER_IMAGE}")
             }
         }
         stage("OWASP : Dependency Check") {
@@ -44,29 +54,40 @@ pipeline {
         }
         stage("Docker Image Security Scan (Trivy)") {
             steps {
-                // Scan the Docker image with Trivy using a shared library function.
-                // The options can be customized to specify severity levels, etc.
-                dockerScanTrivy("gemini", "latest")
-                echo "Trivy scan completed."
+                dockerScanTrivy("${DOCKER_IMAGE}", "${params.GEMINI_DOCKER_TAG}")
+                echo "Trivy scan completed for ${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG}."
             }
         }
         stage("Push to DockerHub") {
             steps {
-                dockerpush("dockerHub","gemini","latest")
-                echo "Push to DockerHub done."
+                dockerpush("dockerHub", "${DOCKER_IMAGE}", "${params.GEMINI_DOCKER_TAG}")
+                echo "Pushed ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG} to DockerHub."
             }
         }
-        stage("Run Container") {
+        // Uncommented and updated the "Run Container" stage to use environment variables
+        // stage("Run Container") {
+        //     steps {
+        //         dockerRunApp("${DOCKER_IMAGE}", "${DOCKER_TAG}", "env_local", "${DOCKER_IMAGE}", "--env-file .env.local -p 3000:3000")
+        //         echo "Container started using ${DOCKER_IMAGE}:${DOCKER_TAG} with container name '${DOCKER_IMAGE}'."
+        //     }
+        // }
+        stage("Cleanup Docker Images") {
             steps {
-                // Call the shared library function
-                // Parameters: image, tag, credential ID for .env.local, container name, and docker run options.
-                dockerRunApp("gemini", "latest", "env_local", "gemini", "--env-file .env.local -p 3000:3000")
-                echo "Container started using .env.local file with container name 'gemini'."
+                script {
+                    sh "docker rmi ${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG} || true"
+                    sh "docker rmi ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG} || true"
+                    sh "docker image prune -f"
+                }
+                echo "Cleaned up Docker image: ${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG}."
             }
         }
     }
     post {
         success {
+            archiveArtifacts artifacts: 'kubernetes/gemini-deployment.yml', followSymlinks: false
+            build job: "Gemini-CD", parameters: [
+                string(name: 'GEMINI_DOCKER_TAG', value: "${params.GEMINI_DOCKER_TAG}")
+            ]
             echo "Pipeline completed successfully!"
             emailext (
                 subject: "SUCCESS: Jenkins Pipeline for ${DOCKER_IMAGE}",
@@ -77,7 +98,7 @@ pipeline {
                             Hello Team,
                         </p>
                         <p style="font-size: 16px; color: #333;">
-                            The Jenkins pipeline for <strong style="color: #4CAF50;">${DOCKER_IMAGE}</strong> completed <strong style="color: #4CAF50;">successfully</strong>!
+                            The Jenkins CI pipeline for <strong style="color: #4CAF50;">${DOCKER_IMAGE}</strong> completed <strong style="color: #4CAF50;">successfully</strong>!
                         </p>
                         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                             <tr style="background-color: #f2f2f2;">
@@ -91,6 +112,10 @@ pipeline {
                             <tr>
                                 <td style="padding: 8px; border: 1px solid #ddd;">Branch</td>
                                 <td style="padding: 8px; border: 1px solid #ddd;">${GIT_BRANCH}</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Docker Image</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG}</td>
                             </tr>
                         </table>
                         <p style="font-size: 16px; color: #333; margin-top: 20px;">
@@ -105,7 +130,7 @@ pipeline {
                 to: "amitabhdevops2024@gmail.com",
                 from: "jenkins@example.com",
                 mimeType: 'text/html',
-                attachmentsPattern: '**/table-report.html'  // This will pick up the report from the workspace
+                attachmentsPattern: '**/table-report.html'
             )
         }
         failure {
@@ -119,7 +144,7 @@ pipeline {
                             Hello Team,
                         </p>
                         <p style="font-size: 16px; color: #333;">
-                            Unfortunately, the Jenkins pipeline for <strong style="color: #F44336;">${DOCKER_IMAGE}</strong> has <strong style="color: #F44336;">failed</strong>.
+                            Unfortunately, the Jenkins CI pipeline for <strong style="color: #F44336;">${DOCKER_IMAGE}</strong> has <strong style="color: #F44336;">failed</strong>.
                         </p>
                         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                             <tr style="background-color: #f2f2f2;">
@@ -134,6 +159,10 @@ pipeline {
                                 <td style="padding: 8px; border: 1px solid #ddd;">Branch</td>
                                 <td style="padding: 8px; border: 1px solid #ddd;">${GIT_BRANCH}</td>
                             </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid #ddd;">Docker Image</td>
+                                <td style="padding: 8px; border: 1px solid #ddd;">${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}:${params.GEMINI_DOCKER_TAG}</td>
+                            </tr>
                         </table>
                         <p style="font-size: 16px; color: #333; margin-top: 20px;">
                             Visit <a href="${BUILD_URL}" style="color: #F44336;">Pipeline Logs</a> for more details.
@@ -147,7 +176,7 @@ pipeline {
                 to: "amitabhdevops2024@gmail.com",
                 from: "jenkins@example.com",
                 mimeType: 'text/html',
-                attachmentsPattern: '**/table-report.html'  // This will pick up the report from the workspace
+                attachmentsPattern: '**/table-report.html'
             )
         }
     }

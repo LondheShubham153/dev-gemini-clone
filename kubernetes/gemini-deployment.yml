@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gemini
-  namespace: gemini-namespace
+  namespace: gemini-namespace1
   labels:
     app: gemini
 spec:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: gemini
-        image: amitabhdevops/gemini
+        image: amitabhdevops/geminiai:v4
         ports:
         - containerPort: 3000
         resources:
