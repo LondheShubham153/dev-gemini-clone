@@ -22,13 +22,6 @@ output "eks_cluster_endpoint" {
   description = "EKS cluster API endpoint"
   value       = module.eks.cluster_endpoint
 }
-output "private_node_ips" {
-  description = "Private IPs of EKS worker nodes"
-  value       = module.eks.eks_managed_node_groups["gemini-ng"].instances[*].private_ip
-}
 
-output "public_node_ips" {
-  description = "Public IPs of EKS worker nodes"
-  value       = module.eks.eks_managed_node_groups["gemini-ng"].instances[*].public_ip
-}
+
 

@@ -19,7 +19,7 @@ module "eks" {
   }
 
   vpc_id                   = module.vpc.vpc_id
-  subnet_ids               = module.vpc.public_subnets
+  subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.intra_subnets
 
   # EKS Managed Node Group(s)
@@ -34,6 +34,7 @@ module "eks" {
 
 
   eks_managed_node_groups = {
+
     gemini-ng = {
       min_size     = 2
       max_size     = 3
@@ -42,14 +43,11 @@ module "eks" {
       instance_types = ["t2.medium"]
       capacity_type  = "SPOT"
 
-      associate_public_ip_address = true
-
       tags = {
         ExtraTag = "geminiapp"
       }
     }
   }
-
 
   node_security_group_additional_rules = {
     allow_nodeport_range = {
