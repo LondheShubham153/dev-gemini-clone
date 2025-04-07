@@ -43,7 +43,8 @@ module "eks" {
       instance_types = ["t2.medium"]
       capacity_type  = "SPOT"
 
-      disk_size = 25 
+      disk_size = 30 
+      use_custom_launch_template = false  # Important!
 
       tags = {
         ExtraTag = "geminiapp"
