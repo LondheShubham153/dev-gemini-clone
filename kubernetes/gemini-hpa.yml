@@ -2,7 +2,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: gemini-hpa
-  namespace: gemini-namespace1
+  namespace: gemini-namespace
 spec:
   scaleTargetRef:
     apiVersion: apps/v1

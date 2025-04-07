@@ -19,5 +19,7 @@ module "vpc" {
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb" = 1
   }
+   # Ensure public subnets auto-assign public IPs
+  map_public_ip_on_launch = true
 
 }
