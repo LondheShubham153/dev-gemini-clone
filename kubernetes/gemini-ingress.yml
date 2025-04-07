@@ -16,7 +16,7 @@ spec:
   tls:
   - hosts:
     - geminimic.letsdeployit.com
-    secretName: gemini-tls-secret
+    secretName: geminimic-tls-secret
   ingressClassName: nginx
   rules:
   - host: "geminimic.letsdeployit.com"
