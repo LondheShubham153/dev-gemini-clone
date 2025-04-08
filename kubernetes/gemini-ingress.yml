@@ -15,11 +15,11 @@ metadata:
 spec:
   tls:
   - hosts:
-    - geminimic.letsdeployit.com
-    secretName: geminimic-tls-secret
+    - geminiamit.letsdeployit.com
+    secretName: gemini-tls-secret
   ingressClassName: nginx
   rules:
-  - host: "geminimic.letsdeployit.com"
+  - host: "geminiamit.letsdeployit.com"
     http:
       paths:
       - path: /
