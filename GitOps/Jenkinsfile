@@ -38,7 +38,7 @@ pipeline {
         stage("Git: Commit and Push") {
             steps {
                 withCredentials([gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default')]) {
-                    sh '''
+                    sh """
                         echo "Checking repository status: "
                         git status
 
@@ -50,7 +50,7 @@ pipeline {
 
                         echo "Pushing changes to github: "
                         git push https://github.com/Amitabh-DevOps/dev-gemini-clone.git DevOps
-                    '''
+                    """
                 }
             }
         }
