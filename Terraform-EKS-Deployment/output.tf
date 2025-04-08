@@ -14,7 +14,7 @@ output "private_subnets" {
 }
 
 output "public_subnets" {
-  description = "Private subnets used by the EKS cluster"
+  description = "Public subnets used by the EKS cluster"
   value       = module.vpc.public_subnets
 }
 
