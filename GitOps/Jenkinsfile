@@ -5,7 +5,6 @@ pipeline {
     
     parameters {
         string(name: 'GEMINI_DOCKER_TAG', defaultValue: 'v1', description: 'Docker tag for gemini image')
-        string(name: 'DOCKER_IMAGE_NAME',  defaultValue: 'amitabhdevops/geminiamit', description: 'Docker image for gemini application')
     }
     
     stages {
@@ -30,7 +29,7 @@ pipeline {
         stage("Update: Kubernetes Manifest") {
             steps {
                 dir('kubernetes') {
-                    sh "sed -i 's|${params.DOCKER_IMAGE_NAME}.*|${params.DOCKER_IMAGE_NAME}:${params.GEMINI_DOCKER_TAG}|' gemini-deployment.yml"
+                    sh "sed -i 's|amitabhdevops/geminiamit.*|amitabhdevops/geminiamit:${params.GEMINI_DOCKER_TAG}|' gemini-deployment.yml"
                 }
             }
         }
