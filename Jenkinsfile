@@ -9,6 +9,7 @@ pipeline {
         GIT_REPO      = "https://github.com/Amitabh-DevOps/dev-gemini-clone.git"
         GIT_BRANCH    = "DevOps"
         DOCKERHUB_USERNAME = "amitabhdevops"
+        DOCKER_IMAGE_NAME = "${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}"
     }
     parameters {
         string(name: 'GEMINI_DOCKER_TAG', defaultValue: 'v1', description: 'Setting docker image for latest push')
@@ -67,7 +68,7 @@ pipeline {
         // Uncommented and updated the "Run Container" stage to use environment variables
         // stage("Run Container") {
         //     steps {
-        //         dockerRunApp("${DOCKER_IMAGE}", "${DOCKER_TAG}", "env_local", "${DOCKER_IMAGE}", "--env-file .env.local -p 3000:3000")
+        //         dockerRunApp("${DOCKER_IMAGE}", "${params.GEMINI_DOCKER_TAG}", "env_local", "${DOCKER_IMAGE}", "--env-file .env.local -p 3000:3000")
         //         echo "Container started using ${DOCKER_IMAGE}:${DOCKER_TAG} with container name '${DOCKER_IMAGE}'."
         //     }
         // }
@@ -86,7 +87,8 @@ pipeline {
         success {
             archiveArtifacts artifacts: 'kubernetes/gemini-deployment.yml', followSymlinks: false
             build job: "Gemini-CD", parameters: [
-                string(name: 'GEMINI_DOCKER_TAG', value: "${params.GEMINI_DOCKER_TAG}")
+                string(name: 'GEMINI_DOCKER_TAG', value: "${params.GEMINI_DOCKER_TAG}"),
+                string(name: 'DOCKER_IMAGE_NAME', value: "${DOCKER_IMAGE_NAME}"),
             ]
             echo "Pipeline completed successfully!"
             emailext (
