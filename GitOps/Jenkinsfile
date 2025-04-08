@@ -83,7 +83,7 @@ pipeline {
                             </tr>
                             <tr>
                                 <td style="padding: 8px; border: 1px solid #ddd;">Docker Image</td>
-                                <td style="padding: 8px; border: 1px solid #ddd;">${params.DOCKER_IMAGE_NAME}:${params.GEMINI_DOCKER_TAG}</td>  // Changed from ${GEMINI_DOCKER_TAG} to ${params.GEMINI_DOCKER_TAG}
+                                <td style="padding: 8px; border: 1px solid #ddd;">amitabhdevops/geminiamit:${params.GEMINI_DOCKER_TAG}</td>  // Changed from ${GEMINI_DOCKER_TAG} to ${params.GEMINI_DOCKER_TAG}
                             </tr>
                             <tr>
                                 <td style="padding: 8px; border: 1px solid #ddd;">Build Number</td>
@@ -138,7 +138,7 @@ pipeline {
                             </tr>
                             <tr>
                                 <td style="padding: 8px; border: 1px solid #ddd;">Docker Image</td>
-                                <td style="padding: 8px; border: 1px solid #ddd;">${params.DOCKER_IMAGE_NAME}:${params.GEMINI_DOCKER_TAG}</td>  // Changed from ${GEMINI_DOCKER_TAG} to ${params.GEMINI_DOCKER_TAG}
+                                <td style="padding: 8px; border: 1px solid #ddd;">amitabhdevops/geminiamit:${params.GEMINI_DOCKER_TAG}</td>  // Changed from ${GEMINI_DOCKER_TAG} to ${params.GEMINI_DOCKER_TAG}
                             </tr>
                             <tr>
                                 <td style="padding: 8px; border: 1px solid #ddd;">Build Number</td>
