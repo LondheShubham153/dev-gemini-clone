@@ -25,7 +25,7 @@ terraform plan
 
 - Apply the changes
 ```bash
-terraform apply
+terraform apply --auto-approve
 ```
 
 - Update your kubeconfig file to connect to the EKS cluster
