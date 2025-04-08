@@ -46,7 +46,7 @@ pipeline {
                         git add kubernetes/gemini-deployment.yml
 
                         echo "Commiting changes: "
-                        git commit -m "Update gemini image to ${GEMINI_DOCKER_TAG}"  // Changed from ${GEMINI_DOCKER_TAG} to ${params.GEMINI_DOCKER_TAG}
+                        git commit -m "Update gemini image to ${GEMINI_DOCKER_TAG}"
 
                         echo "Pushing changes to github: "
                         git push https://github.com/Amitabh-DevOps/dev-gemini-clone.git DevOps
