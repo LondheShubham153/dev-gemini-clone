@@ -38,7 +38,7 @@ pipeline {
         stage("Git: Commit and Push") {
             steps {
                 withCredentials([gitUsernamePassword(credentialsId: 'Github', gitToolName: 'Default')]) {
-                    sh """
+                    sh '''
                         echo "Checking repository status: "
                         git status
 
@@ -46,11 +46,11 @@ pipeline {
                         git add kubernetes/gemini-deployment.yml
 
                         echo "Commiting changes: "
-                        git commit -m "Update gemini image to ${GEMINI_DOCKER_TAG}"
+                        git commit -m "Update gemini image to ${params.GEMINI_DOCKER_TAG}"
 
                         echo "Pushing changes to github: "
                         git push https://github.com/Amitabh-DevOps/dev-gemini-clone.git DevOps
-                    """
+                    '''
                 }
             }
         }
