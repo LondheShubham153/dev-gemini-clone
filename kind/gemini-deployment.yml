@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gemini
+  namespace: gemini-namespace
+  labels:
+    app: gemini
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: gemini
+  template:
+    metadata:
+      labels:
+        app: gemini
+    spec:
+      containers:
+      - name: gemini
+        image: amitabhdevops/geminiamit:v3
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+        env:
+        - name: GOOGLE_ID
+          valueFrom:
+            configMapKeyRef:
+              name: gemini-config
+              key: GOOGLE_ID
+        - name: GOOGLE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: gemini-secret
+              key: GOOGLE_SECRET
+        - name: MONGODB_URI
+          valueFrom:
+            configMapKeyRef:
+              name: gemini-config
+              key: MONGODB_URI
+        - name: NEXTAUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: gemini-secret
+              key: NEXTAUTH_SECRET
+        - name: NEXTAUTH_URL
+          valueFrom:
+            configMapKeyRef:
+              name: gemini-config
+              key: NEXTAUTH_URL
+        - name: NEXT_PUBLIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: gemini-secret
+              key: NEXT_PUBLIC_API_KEY

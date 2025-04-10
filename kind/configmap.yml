@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gemini-config
+  namespace: gemini-namespace
+data:
+  GOOGLE_ID: 691564599482-9sgrhm8ef24b1jnoh1cjumdk9adolhch.apps.googleusercontent.com
+  MONGODB_URI: mongodb+srv://amitabhdevops2004:R4XBQvrCzbDLCyDb@devgemini.7veo5.mongodb.net/ # Create your own account's cluster on mongodb.com and use it here
+  NEXTAUTH_URL: https://geminiamitabh.letsdeployit.com
+  MONGO_INITDB_ROOT_USERNAME: amitabhdevops2004 # Create your own account on mongodb.com and use it here
