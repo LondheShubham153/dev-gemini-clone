@@ -5,21 +5,21 @@ metadata:
   namespace: gemini-namespace
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: "50m"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"  # Force HTTPS
-    cert-manager.io/cluster-issuer: letsencrypt-prod  # Use Let's Encrypt
-    nginx.ingress.kubernetes.io/proxy-set-headers: "ingress-headers"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"  # Force HTTPS
+    # cert-manager.io/cluster-issuer: letsencrypt-prod  # Use Let's Encrypt
+    # nginx.ingress.kubernetes.io/proxy-set-headers: "ingress-headers"
     nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/affinity: cookie
-    nginx.ingress.kubernetes.io/session-cookie-name: gemini_session
-    nginx.ingress.kubernetes.io/session-cookie-hash: sha1
+    # nginx.ingress.kubernetes.io/affinity: cookie
+    # nginx.ingress.kubernetes.io/session-cookie-name: gemini_session
+    # nginx.ingress.kubernetes.io/session-cookie-hash: sha1
 spec:
-  tls:
-  - hosts:
-    - geminiamitabh.letsdeployit.com
-    secretName: gemini-tls-secret
+  #tls:
+  #- hosts:
+  #  - geminiamitabh.letsdeployit.com
+  #  secretName: gemini-tls-secret
   ingressClassName: nginx
   rules:
-  - host: "geminiamitabh.letsdeployit.com"
+  - host: "89.116.22.115.nip.io"
     http:
       paths:
       - path: /

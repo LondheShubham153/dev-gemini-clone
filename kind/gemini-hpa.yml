@@ -9,7 +9,7 @@ spec:
     kind: Deployment
     name: gemini
   minReplicas: 1
-  maxReplicas: 25
+  maxReplicas: 5
   metrics:
   - type: Resource
     resource:
