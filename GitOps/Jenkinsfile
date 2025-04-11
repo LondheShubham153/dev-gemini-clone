@@ -43,7 +43,7 @@ stages {
                     git status
 
                     echo "Adding changes to git: "
-                    git add kind/gemini-deployment.yml
+                    git add .
 
                     echo "Commiting changes: "
                     git commit -m "Update gemini image to ${GEMINI_DOCKER_TAG}"
