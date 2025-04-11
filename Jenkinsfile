@@ -5,7 +5,7 @@ pipeline {
     
     environment {
         SONAR_HOME = tool "Sonar"
-        DOCKER_IMAGE  = "geminiamit"
+        DOCKER_IMAGE  = "gemininip"
         GIT_REPO      = "https://github.com/Amitabh-DevOps/dev-gemini-clone.git"
         GIT_BRANCH    = "DevOps"
         DOCKERHUB_USERNAME = "amitabhdevops"

@@ -29,7 +29,7 @@ pipeline {
         stage("Update: Kubernetes Manifest") {
             steps {
                 dir('kubernetes') {
-                    sh "sed -i 's|amitabhdevops/geminiamit.*|amitabhdevops/geminiamit:${params.GEMINI_DOCKER_TAG}|' gemini-deployment.yml"
+                    sh "sed -i 's|amitabhdevops/gemininip.*|amitabhdevops/gemininip:${params.GEMINI_DOCKER_TAG}|' gemini-deployment.yml"
                 }
             }
         }
