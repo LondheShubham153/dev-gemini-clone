@@ -29,7 +29,7 @@ stages {
     
     stage("Update: Kubernetes Manifest") {
         steps {
-            dir('kubernetes') {
+            dir('kind') {
                 sh "sed -i 's|${params.DOCKER_IMAGE_NAME}.*|${params.DOCKER_IMAGE_NAME}:${params.GEMINI_DOCKER_TAG}|' gemini-deployment.yml"
             }
         }
