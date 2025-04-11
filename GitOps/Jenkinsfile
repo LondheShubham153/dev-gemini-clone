@@ -43,7 +43,7 @@ stages {
                     git status
 
                     echo "Adding changes to git: "
-                    git add kubernetes/gemini-deployment.yml
+                    git add kind/gemini-deployment.yml
 
                     echo "Commiting changes: "
                     git commit -m "Update gemini image to ${GEMINI_DOCKER_TAG}"
@@ -80,7 +80,7 @@ post {
                         </tr>
                         <tr>
                             <td style="padding: 8px; border: 1px solid #ddd;">Branch</td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">DevOps</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">kind</td>
                         </tr>
                         <tr>
                             <td style="padding: 8px; border: 1px solid #ddd;">Docker Image</td>
@@ -135,7 +135,7 @@ post {
                         </tr>
                         <tr>
                             <td style="padding: 8px; border: 1px solid #ddd;">Branch</td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">DevOps</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">kind</td>
                         </tr>
                         <tr>
                             <td style="padding: 8px; border: 1px solid #ddd;">Docker Image</td>
