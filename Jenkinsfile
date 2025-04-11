@@ -7,7 +7,7 @@ environment {
     SONAR_HOME = tool "Sonar"
     DOCKER_IMAGE  = "gemininip"
     GIT_REPO      = "https://github.com/Amitabh-DevOps/dev-gemini-clone.git"
-    GIT_BRANCH    = "DevOps"
+    GIT_BRANCH    = "kind"
     DOCKERHUB_USERNAME = "amitabhdevops"
     DOCKER_IMAGE_NAME = "${DOCKERHUB_USERNAME}/${DOCKER_IMAGE}"
 }

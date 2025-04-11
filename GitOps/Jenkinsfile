@@ -17,7 +17,7 @@ stages {
     
     stage("Git: Code Checkout") {
         steps {
-            clone("https://github.com/Amitabh-DevOps/dev-gemini-clone.git", "DevOps")
+            clone("https://github.com/Amitabh-DevOps/dev-gemini-clone.git", "kind")
         }
     }
     
