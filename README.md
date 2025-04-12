@@ -205,5 +205,3 @@ If the configuration is correct, your application will be live and accessible.
 - Your application is successfully proxied by **Nginx** on port 3000.
 - Your domain is secured with **HTTPS** and properly resolving.
 - Your application is live and accessible.
-
----
