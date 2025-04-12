@@ -122,7 +122,7 @@ The output should list two clusters:
 
 ### 6.1 Add a Repository in ArgoCD
 
-- Log in to the ArgoCD UI.  
+- Go to the ArgoCD UI.  
 - Add your repository in the settings.
 
 ### 6.2 Install Helm
