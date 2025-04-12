@@ -192,7 +192,7 @@ Expected output:
 
 Open your web browser and navigate to:
 
-🔗 [**https://<YOUR_DOMAIN_NAME>**](https://gemini.letsdeployit.com/)
+🔗 [**https://<YOUR_DOMAIN_NAME>**](https://<YOUR_DOMAIN_NAME>)
 
 If the configuration is correct, your application will be live and accessible.
 
