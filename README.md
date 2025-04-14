@@ -552,8 +552,81 @@ sudo apt-get install trivy -y
 
 ---
 
-## 14. Observability Setup
+
+# Observability Setup
 
 After your CI/CD pipeline is in place, proceed with setting up observability tools to monitor application performance and security.
 
+## Setting Up Observability with Prometheus and Grafana
+
+### 1. Add Prometheus Helm Repository
+
+Start by adding the Prometheus Helm repository:
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+```
+
+### 2. Create the Prometheus Namespace
+
+Create a dedicated namespace for Prometheus:
+```bash
+kubectl create namespace prometheus
+```
+
+### 3. Install Prometheus
+
+Install the Prometheus and Grafana stack using Helm in the `prometheus` namespace:
+```bash
+helm install stable prometheus-community/kube-prometheus-stack -n prometheus
+```
+
+### 4. Get Services in the Prometheus Namespace
+
+To view the services running in the `prometheus` namespace, use the following command:
+```bash
+kubectl get svc -n prometheus
+```
+
+### 5. Expose Grafana via NodePort
+
+Expose Grafana through NodePort by patching the service:
+```bash
+kubectl patch svc stable-grafana -n prometheus -p '{"spec": {"type": "NodePort"}}'
+kubectl get svc -n prometheus
+kubectl port-forward --address 0.0.0.0 svc/stable-grafana <NODEPORT>:80 -n prometheus &
+```
+
+Open it in your browser using the `<ROOT_INSTANCE_PUBLIC_IP>:<NODEPORT>`, where `<ROOT_INSTANCE_PUBLIC_IP>` is the server where your Kind cluster is running.
+
+### 6. Access Grafana
+
+To access Grafana, use the admin username and retrieve the password by running:
+```bash
+kubectl get secret --namespace prometheus stable-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+```
+
+### 7. Monitoring Your Application
+
+Now that Prometheus and Grafana are set up, you can use Grafana to monitor your application metrics. Grafana will pull metrics from Prometheus, allowing you to create dashboards to visualize various aspects of your application’s performance.
+
+#### Grafana Dashboard
+![Grafana-dashboard](Readme_images/image-2.png)
+
+#### Kubernetes / Compute Resources / Cluster
+![Prometheous-cluster-dashboard](Readme_images/image-3.png)
+
+#### Kubernetes / API Server
+![Kubernetes-API-server](Readme_images/image-4.png)
+
 ---
+
+## Conclusion
+
+You are all set—you have successfully completed this Google Gemini Clone project. All components have been configured and integrated, including:
+
+- **Infrastructure Provisioning:** Terraform-based provisioning of EC2 instances for Jenkins master and agent.
+- **CI/CD Pipeline:** Jenkins master/agent setup, pipeline jobs, and integration of code quality/security tools such as OWASP, SonarQube, and Trivy.
+- **Observability:** Monitoring setup using Prometheus and Grafana.
+- **Kubernetes Integration:** Kind cluster creation and ArgoCD setup for automated deployments.
+
+This comprehensive configuration establishes a robust DevSecOps workflow ready for production environments.
