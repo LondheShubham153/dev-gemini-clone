@@ -652,4 +652,8 @@ You are all set—you have successfully completed this Google Gemini Clone proje
 -->
   https://github.com/user-attachments/assets/1f4f2da7-b502-4aca-924e-8063254630cf
 
+
+In case you can not access it, then here is YT video link : https://youtu.be/CCWsMZtri2I?si=teF9ThDoXBWp_AmO
+
+
 This comprehensive configuration establishes a robust DevSecOps workflow ready for production environments.
