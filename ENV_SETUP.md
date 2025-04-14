@@ -12,9 +12,13 @@ These credentials authenticate your users via Google’s OAuth 2.0 service.
 - **Creating OAuth Credentials:**
   - In **Credentials**, click **Create Credentials** → **OAuth client ID**.
   - Choose **Web Application**.
-  - Under **Authorized JavaScript origins** and **Authorized redirect URIs**, add your production domain, for example:  
-    - `https://your-production-domain.com` in **Authorized JavaScript origins**
-    - `https://your-production-domain.com/api/auth/callback/google` in **Authorized redirect URIs**
+  - Under **Authorized JavaScript origins** and **Authorized redirect URIs**, add your production domain. For example:
+    - In **Authorized JavaScript origins**:
+      - `http://your-production-domain.com`
+      - `https://your-production-domain.com`
+    - In **Authorized redirect URIs**:
+      - `http://your-production-domain.com/api/auth/callback/google`
+      - `https://your-production-domain.com/api/auth/callback/google`
   - Save the **Client ID** and **Client Secret**:
     - Use the Client ID as **GOOGLE_ID**.
     - Use the Client Secret as **GOOGLE_SECRET**.
@@ -37,12 +41,12 @@ The connection string directs your application to your MongoDB database hosted o
   - Whitelist the production server’s IP addresses (or use VPC peering) so that only approved connections are allowed.
 
 - **Create a Database User:**
-  - Create a user with a secure password and assign necessary roles for read/write operations on your database.
+  - Create a user with a secure password and assign the necessary roles for read/write operations on your database.
   - Store the Username and Password securely; these will later be used in your ConfigMap and secrets for your Kubernetes deployment.
 
 - **Obtain the Connection String:**
   - In Atlas, click **Connect** and choose **Connect your application**.
-  - Update the connection string template by replacing `<username>`, `<password>`, and `<database>` with your credentials and database name. For example:  
+  - Update the connection string template by replacing `<username>`, `<password>`, and `<database>` with your credentials and database name. For example:
     ```
     mongodb+srv://<username>:<password>@cluster0.mongodb.net/<database>?retryWrites=true&w=majority
     ```
@@ -62,13 +66,13 @@ This secret secures sessions and token encryption for NextAuth.
 **Production Setup:**
 
 - **Generate a Secure Secret:**
-  - Generate a cryptographically secure random string. For example, using Node.js:
+
+  > [!NOTE]
+  > Node.js should be installed on your system (laptop) to generate this secret. Download it from [https://nodejs.org/en/download](https://nodejs.org/en/download) if needed.
+
+  - Generate a secure random string using Node.js:
     ```bash
-    node -e "console.log(require('crypto').randomBytes(32).toString('hex'));"
-    ```
-    or using OpenSSL:
-    ```bash
-    openssl rand -hex 32
+    npx auth secret
     ```
 - **Usage:**
   - Set the generated value as **NEXTAUTH_SECRET** in your production environment.
