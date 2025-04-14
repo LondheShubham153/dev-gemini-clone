@@ -345,7 +345,7 @@ ssh-keygen
 ```
 
 ### Step 6.2: Copy the Public Key to the Agent  
-1. On the Jenkins Master, navigate to the `~/.ssh` directory and locate the generated `.pub` file.  
+1. On the Jenkins Master, navigate to the `~/.ssh` directory and copy the generated `.pub` file.  
 2. On the Jenkins Agent, navigate to the `~/.ssh` directory.  
 3. Append the public key from the master to the Agent’s `authorized_keys` file.
 
@@ -411,7 +411,7 @@ docker run -itd --name SonarQube-Server -p 9000:9000 sonarqube:lts-community
 ```
 
 Access SonarQube via `http://<MASTER_PUBLIC_IP>:9000`.  
-Use username `admin` (and change the password later).
+Use username and password as `admin` (and change the password later).
 
 ### Step 9.2: Configure SonarQube in Jenkins
 
