@@ -642,7 +642,7 @@ You are all set—you have successfully completed this Google Gemini Clone proje
 - **Observability:** Monitoring setup using Prometheus and Grafana.
 - **Kubernetes Integration:** Kind cluster creation and ArgoCD setup for automated deployments.
 
-
+This comprehensive configuration establishes a robust DevSecOps workflow ready for production environments.
 
 
 
@@ -655,5 +655,3 @@ You are all set—you have successfully completed this Google Gemini Clone proje
 
 In case you can not access it, then here is YT video link : https://youtu.be/CCWsMZtri2I?si=teF9ThDoXBWp_AmO
 
-
-This comprehensive configuration establishes a robust DevSecOps workflow ready for production environments.
