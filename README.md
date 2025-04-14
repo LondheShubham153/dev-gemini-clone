@@ -42,9 +42,11 @@ Follow this guide to set up a DevSecOps-ready Google Gemini Clone if you cannot 
 - Open the project in VSCode or your preferred code editor.
 - Open the integrated terminal in VSCode.
 - Switch to the `kind` branch using the command:
+
   ```bash
   git checkout kind
   ```
+  
 - You're all set! Go ahead with this guide — best of luck!
 
 ---
@@ -52,7 +54,6 @@ Follow this guide to set up a DevSecOps-ready Google Gemini Clone if you cannot 
 ## 1. Create the Kind Cluster
 
 Create your cluster using the following command with your custom configuration (stored in `kind-config.yml`):
-
 
 ```bash
 kind create cluster --name gemini-cluster --config kind-config.yml
