@@ -16,7 +16,9 @@ These credentials authenticate your users via Google’s OAuth 2.0 service.
 - **Creating OAuth Credentials:**
   - In **Credentials**, click **Create Credentials** → **OAuth client ID**.
   - Choose **Web Application**.
-  - Under **Authorized JavaScript origins** and **Authorized redirect URIs**, add your production domain (for example, `https://your-production-domain.com` and `https://your-production-domain.com/api/auth/callback/google`).
+  - Under **Authorized JavaScript origins** and **Authorized redirect URIs**, add your production domain, for example:  
+    - `https://your-production-domain.com`  
+    - `https://your-production-domain.com/api/auth/callback/google`
   - Save the **Client ID** and **Client Secret**:
     - Use the Client ID as **GOOGLE_ID**.
     - Use the Client Secret as **GOOGLE_SECRET**.
@@ -36,17 +38,22 @@ The connection string directs your application to your MongoDB database hosted o
 
 - **Set Up Your Atlas Cluster:**
   - Sign in to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and create a cluster.
-  - Whitelist the production server’s IP addresses (or use VPC peering).
+  - Whitelist the production server’s IP addresses (or use VPC peering) so that only approved connections are allowed.
 
 - **Create a Database User:**
   - Create a user with a secure password and assign necessary roles for read/write operations on your database.
+  - Store the Username and Password securely; these will later be used in your ConfigMap and secrets for your Kubernetes deployment.
 
 - **Obtain the Connection String:**
   - In Atlas, click **Connect** and choose **Connect your application**.
-  - Update the connection string template (e.g., replace `<username>`, `<password>`, and `<database>`) and store it as **MONGODB_URI**.
+  - Update the connection string template by replacing `<username>`, `<password>`, and `<database>` with your credentials and database name. For example:  
+    ```
+    mongodb+srv://<username>:<password>@cluster0.mongodb.net/<database>?retryWrites=true&w=majority
+    ```
+  - Store this string as **MONGODB_URI** in your production environment.
 
 - **Security Considerations:**
-  - Use TLS (enforced by Atlas) to encrypt data in transit.
+  - Use TLS (automatically enforced by Atlas) to encrypt data in transit.
   - Store these details securely as environment variables, not in your code.
 
 ---
@@ -54,46 +61,50 @@ The connection string directs your application to your MongoDB database hosted o
 ## 3. NextAuth Secret (NEXTAUTH_SECRET)
 
 **Purpose:**  
-This secret is used to secure sessions and token encryption for NextAuth.
+This secret secures sessions and token encryption for NextAuth.
 
 **Production Setup:**
 
 - **Generate a Secure Secret:**
-  - Generate a cryptographically secure random string. For example, run:
+  - Generate a cryptographically secure random string. For example, using Node.js:
     ```bash
     node -e "console.log(require('crypto').randomBytes(32).toString('hex'));"
     ```
-    or use:
+    or using OpenSSL:
     ```bash
     openssl rand -hex 32
     ```
 - **Usage:**
-  - Set the result as your **NEXTAUTH_SECRET** in your production environment.
+  - Set the generated value as **NEXTAUTH_SECRET** in your production environment.
+
 - **Security Considerations:**
-  - Keep it confidential and rotate regularly according to your security policy.
+  - Keep this secret confidential and rotate it regularly in line with your security policies.
 
 ---
 
 ## 4. Base URL for the Application (NEXTAUTH_URL)
 
 **Purpose:**  
-The base URL specifies your application’s canonical domain for building callback URLs and other endpoints in NextAuth.
+This URL specifies your application’s canonical domain for constructing callback URLs and other endpoints in NextAuth.
 
 **Production Setup:**
 
 - **Set the Production URL:**
-  - Replace development URLs with your production domain (e.g., `NEXTAUTH_URL=https://your-production-domain.com`).
+  - Replace your development URL with your production domain. For example:
+    ```
+    NEXTAUTH_URL=https://your-production-domain.com
+    ```
 - **Configuration:**
-  - Ensure this URL is added to your environment configuration and matches the one specified in your OAuth credentials.
+  - Ensure this URL is included in your environment configuration and exactly matches what is specified in your OAuth credentials for authorized domains.
 - **Security Considerations:**
-  - Use HTTPS for all production communications.
+  - Use HTTPS for secure communications.
 
 ---
 
 ## 5. Google API Key (NEXT_PUBLIC_API_KEY)
 
 **Purpose:**  
-This key authenticates client-side requests to various Google APIs (Maps, Places, etc.).
+This key authenticates client-side requests to various Google APIs (Maps, Places, and in this case, the Generative Language API).
 
 **Production Setup:**
 
@@ -107,31 +118,31 @@ This key authenticates client-side requests to various Google APIs (Maps, Places
 
 - **Restrict the API Key:**
   - **Application Restrictions:**  
-    Limit usage to your production domain (using HTTP referrer restrictions).
+    Limit usage to your production domain by setting HTTP referrer restrictions.
   - **API Restrictions:**  
-    Restrict the key to the specific Google APIs your application requires as for `Generative Language API`.
+    Restrict the key to only the necessary Google APIs such as the Generative Language API.
   
 - **Usage and Security Considerations:**
-  - Since `NEXT_PUBLIC_API_KEY` is exposed to the client side, careful restrictions are crucial.
-  - Monitor the API key usage and rotate it if unusual activities are detected.
+  - Since the `NEXT_PUBLIC_API_KEY` is exposed on the client side, set strict restrictions to prevent misuse.
+  - Regularly monitor the key usage and rotate if any suspicious activity is detected.
 
 ---
 
 ## General Best Practices for Production Environments
 
 - **Environment Variable Management:**
-  - Use environment-specific configuration files (e.g., `.env.production`) and ensure they are excluded from source control.
-  - Consider using secrets management solutions (Google Secret Manager, AWS Secrets Manager, or HashiCorp Vault) to securely store and access credentials.
+  - Use environment-specific configuration files (e.g., `.env.production`) and ensure these files are excluded from version control.
+  - Consider leveraging secrets management solutions such as Google Secret Manager, AWS Secrets Manager, or HashiCorp Vault for enhanced security.
 
 - **Secure Network and Access:**
-  - Restrict access to your databases and services using IP whitelisting, VPNs, or Virtual Private Clouds (VPCs).
-  - Enforce HTTPS everywhere to protect data in transit.
+  - Restrict access to your databases and external services using IP whitelisting, VPNs, or Virtual Private Clouds (VPCs).
+  - Enforce HTTPS to secure data in transit.
 
 - **Regular Auditing and Rotation:**
-  - Continuously monitor, audit, and rotate credentials such as API keys and secrets.
-  - Set up alerts for any unusual activity or access patterns.
+  - Continuously monitor, audit, and rotate credentials such as API keys and secrets according to your organization’s security policies.
+  - Set up alerts for any unusual activity or unauthorized access attempts.
 
 - **Logging and Monitoring:**
-  - Implement comprehensive logging and monitoring of both your application and its interactions with external APIs.
-  - Consider tools that integrate with your cloud provider or third-party monitoring services.
+  - Implement comprehensive logging and monitoring for both your application and its interactions with external APIs.
+  - Consider integrating with cloud provider tools or third-party solutions to help detect and respond to security incidents.
 
