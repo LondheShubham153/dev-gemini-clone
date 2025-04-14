@@ -18,6 +18,30 @@ Follow this guide to set up a DevSecOps-ready Google Gemini Clone if you cannot 
 
 ---
 
+## Setting up the Repo and Workspace
+
+- Fork this repo on GitHub: [https://github.com/Amitabh-DevOps/dev-gemini-clone.git](https://github.com/Amitabh-DevOps/dev-gemini-clone.git)
+- Clone the forked repo to your system.
+- Open the project in VSCode or your preferred code editor.
+- Open the integrated terminal in VSCode.
+- Login to your VPS or EC2 Instance via SSH
+- Now again Clone that repo into that VPS or EC2 Instance.
+- Then switch to the `kind` branch, and go to root dir `dev-gemini-clone` using the command:
+
+  ```bash
+  git checkout kind
+
+  cd dev-gemini-clone
+  ```
+
+- You're all set! Go ahead with this guide — best of luck!
+
+
+>  [!TIP]
+>  If you are Windows user and do not know how to get Linux/Ubuntu in your VSCode, then don't worry follow this guide : [Setting up Linux/Ubuntu in Windows VSCode](https://amitabhdevops.hashnode.dev/a-step-by-step-guide-to-adding-ubuntu-wsl-in-vs-code-terminal)
+
+---
+
 ## Prerequisites for Kubernetes & ArgoCD
 
 - **Docker** installed and configured  
@@ -31,23 +55,6 @@ Follow this guide to set up a DevSecOps-ready Google Gemini Clone if you cannot 
 >
 >    [how-to-install-essential-devops-tools-on-ubuntulinux](https://amitabhdevops.hashnode.dev/how-to-install-essential-devops-tools-on-ubuntulinux)
 
-
----
-
-
-## Setting up the Repo and Workspace
-
-- Fork this repo on GitHub: [https://github.com/Amitabh-DevOps/dev-gemini-clone.git](https://github.com/Amitabh-DevOps/dev-gemini-clone.git)
-- Clone the forked repo to your system.
-- Open the project in VSCode or your preferred code editor.
-- Open the integrated terminal in VSCode.
-- Switch to the `kind` branch using the command:
-
-  ```bash
-  git checkout kind
-  ```
-  
-- You're all set! Go ahead with this guide — best of luck!
 
 ---
 
