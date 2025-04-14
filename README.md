@@ -35,6 +35,17 @@ Follow this guide to set up a DevSecOps-ready Google Gemini Clone if you cannot 
 ---
 
 
+## Setting up the Repo and Workspace
+
+- Fork this repo on GitHub: [https://github.com/Amitabh-DevOps/dev-gemini-clone.git](https://github.com/Amitabh-DevOps/dev-gemini-clone.git)
+- Clone the forked repo to your system.
+- Open the project in VSCode or your preferred code editor.
+- Open the integrated terminal in VSCode.
+- Switch to the `kind` branch using the command:
+  ```bash
+  git checkout kind
+  ```
+- You're all set! Go ahead with this guide — best of luck!
 
 ---
 
