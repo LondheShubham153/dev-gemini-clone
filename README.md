@@ -69,7 +69,7 @@ Follow this guide to set up a DevSecOps-ready Google Gemini Clone if you cannot 
 
 >  [!IMPORTANT]
 >
->  - **Replace** `<INSTANCE_PUBLIC_IP>` with your actual instance IP address before going ahead.  
+>  - **Replace** `<INSTANCE_PUBLIC_IP>` with your actual instance IP address in this guide wherever you see that.  
 
 ---
 
