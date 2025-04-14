@@ -212,6 +212,11 @@ Click **Create App**. Once the application is healthy, you can access it at `<IN
 - Your `configmap.yml` file has `NEXTAUTH_URL` set to `<INSTANCE_PUBLIC_IP>.nip.io`.  
 - The Ingress configuration specifies the host and TLS settings to use `<INSTANCE_PUBLIC_IP>.nip.io`.
 
+
+- ArgoCD Application Dashboard:
+
+   ![ArgoCD-Application-Dashboard](Readme_images/image.png)
+
 ---
 
 
