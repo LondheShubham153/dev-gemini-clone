@@ -38,7 +38,6 @@ The connection string directs your application to your MongoDB database hosted o
 
 - **Set Up Your Atlas Cluster:**
   - Sign in to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and create a cluster.
-  - Whitelist the production server’s IP addresses (or use VPC peering) so that only approved connections are allowed.
 
 - **Create a Database User:**
   - Create a user with a secure password and assign the necessary roles for read/write operations on your database.
@@ -67,8 +66,8 @@ This secret secures sessions and token encryption for NextAuth.
 
 - **Generate a Secure Secret:**
 
-  > [!NOTE]
-  > Node.js should be installed on your system (laptop) to generate this secret. Download it from [https://nodejs.org/en/download](https://nodejs.org/en/download) if needed.
+> [!NOTE]
+> Node.js should be installed on your system (laptop) to generate this secret. Download it from [https://nodejs.org/en/download](https://nodejs.org/en/download) if needed.
 
   - Generate a secure random string using Node.js:
     ```bash
