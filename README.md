@@ -559,6 +559,9 @@ After your CI/CD pipeline is in place, proceed with setting up observability too
 
 ## Setting Up Observability with Prometheus and Grafana
 
+>**Note**
+> Go to that server, on which you have created KIND Cluster and follow below guide
+
 ### 1. Add Prometheus Helm Repository
 
 Start by adding the Prometheus Helm repository:
