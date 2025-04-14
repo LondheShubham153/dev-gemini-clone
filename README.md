@@ -644,6 +644,7 @@ You are all set—you have successfully completed this Google Gemini Clone proje
 
 #### Watch this video for quick workflow of the DevSecOps in Google Gemini Clone(skip the intro and outro)
 
-   <video controls src="Readme_images/workflow.mp4" title="Title"></video>
+   ![Workflow-video](Readme_images/workflow.mp4)
+   
 
 This comprehensive configuration establishes a robust DevSecOps workflow ready for production environments.
