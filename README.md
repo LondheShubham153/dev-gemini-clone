@@ -27,7 +27,9 @@ Follow this guide to set up a DevSecOps-ready Google Gemini Clone if you cannot 
 
 >  [!TIP]
 >
->  If you want a one stop solution to Install above Prerequisites tools follow this guide : https://amitabhdevops.hashnode.dev/how-to-install-essential-devops-tools-on-ubuntulinux
+>  If you want a one stop solution to Install above Prerequisites tools follow this guide : 👇
+>
+>    [blog](https://amitabhdevops.hashnode.dev/how-to-install-essential-devops-tools-on-ubuntulinux)
 
 
 ---
