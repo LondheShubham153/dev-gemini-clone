@@ -545,8 +545,10 @@ sudo apt-get install trivy -y
 - **Automated CD Trigger:**  
   When the `Gemini-CI` job completes successfully, the `Gemini-CD` job is automatically triggered. This job will update the application image version in the `gemini-deployment`, push the changes to GitHub, and trigger ArgoCD to update the deployment.
 
-> **Note:**  
+> [!Important]
 > The first run of the OWASP Dependency Check may take 20–25 minutes to download required resources; subsequent runs should complete in under a minute.
+>
+> Also if your last stage(Declarative: Post Actions) of Pipline is taking too much time then check the Agents `Number of executors` it should be set to `2`
 
 ---
 
