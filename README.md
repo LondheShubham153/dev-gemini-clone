@@ -609,7 +609,7 @@ kubectl port-forward --address 0.0.0.0 svc/stable-grafana <NODEPORT>:80 -n prome
 
 > [!Important]
 >  Open it in your browser using the
- `<ROOT_INSTANCE_PUBLIC_IP>:<NODEPORT>`, where `<ROOT_INSTANCE_PUBLIC_IP>` is the server where your Kind cluster is running.
+ `<INSTANCE_PUBLIC_IP>:<NODEPORT>`, where `<INSTANCE_PUBLIC_IP>` is the server where your Kind cluster is running.
 
 ### 6. Access Grafana
 
