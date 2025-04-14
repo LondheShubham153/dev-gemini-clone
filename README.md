@@ -16,11 +16,6 @@ Follow this guide to set up a DevSecOps-ready Google Gemini Clone if you cannot 
 
 ---
 
->  [!IMPORTANT]
->
->  - **Replace** `<INSTANCE_PUBLIC_IP>` with your actual instance IP address.  
-
----
 
 ## Setting up the Repo and Workspace
 
@@ -46,6 +41,16 @@ Follow this guide to set up a DevSecOps-ready Google Gemini Clone if you cannot 
 
 ---
 
+## To set up the environment variables for the application, follow these steps:
+
+- Refer to the [ENV_SETUP.md](ENV_SETUP.md) file for detailed instructions on configuring the environment variables as specified in the `.env.sample`.
+- Once you have collected all the required environment variables, create a `.env.local` file in the root directory of the project.
+- Enter all the correct environment variable values in the `.env.local` file.  
+  **Note:** This file will need to be uploaded to Jenkins during your CI/CD pipeline process, so please ensure that all values are accurate. Additionally, these environment variables are required at the time of the Docker build.
+
+---
+
+
 ## Prerequisites for Kubernetes & ArgoCD
 
 - **Docker** installed and configured  
@@ -61,6 +66,13 @@ Follow this guide to set up a DevSecOps-ready Google Gemini Clone if you cannot 
 
 
 ---
+
+>  [!IMPORTANT]
+>
+>  - **Replace** `<INSTANCE_PUBLIC_IP>` with your actual instance IP address before getting started ahead.  
+
+---
+
 
 ## 1. Create the Kind Cluster
 
