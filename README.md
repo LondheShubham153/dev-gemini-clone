@@ -1,4 +1,4 @@
-# Advanced Gemini Clone with Kubernetes Setup
+# Advanced Gemini Clone with DevSecOps Implementation
 
 ![Gemini Clone Logo](public/assets/readme-banner.png)
 
