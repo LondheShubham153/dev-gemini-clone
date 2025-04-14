@@ -599,7 +599,9 @@ kubectl get svc -n prometheus
 kubectl port-forward --address 0.0.0.0 svc/stable-grafana <NODEPORT>:80 -n prometheus &
 ```
 
-Open it in your browser using the `<ROOT_INSTANCE_PUBLIC_IP>:<NODEPORT>`, where `<ROOT_INSTANCE_PUBLIC_IP>` is the server where your Kind cluster is running.
+> [!Important]
+>  Open it in your browser using the
+ `<ROOT_INSTANCE_PUBLIC_IP>:<NODEPORT>`, where `<ROOT_INSTANCE_PUBLIC_IP>` is the server where your Kind cluster is running.
 
 ### 6. Access Grafana
 
