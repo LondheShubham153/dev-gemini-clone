@@ -9,16 +9,12 @@ These credentials authenticate your users via Google’s OAuth 2.0 service.
   - Go to the [Google Cloud Console](https://console.cloud.google.com/) and create or select your production project.
   - Enable the necessary APIs, such as Google Identity Services.
 
-- **OAuth Consent Screen:**
-  - Configure the **OAuth consent screen** with your organization’s details.
-  - Ensure your app’s branding, scopes, and authorized domains reflect your production environment.
-
 - **Creating OAuth Credentials:**
   - In **Credentials**, click **Create Credentials** → **OAuth client ID**.
   - Choose **Web Application**.
   - Under **Authorized JavaScript origins** and **Authorized redirect URIs**, add your production domain, for example:  
-    - `https://your-production-domain.com`  
-    - `https://your-production-domain.com/api/auth/callback/google`
+    - `https://your-production-domain.com` in **Authorized JavaScript origins**
+    - `https://your-production-domain.com/api/auth/callback/google` in **Authorized redirect URIs**
   - Save the **Client ID** and **Client Secret**:
     - Use the Client ID as **GOOGLE_ID**.
     - Use the Client Secret as **GOOGLE_SECRET**.
@@ -124,7 +120,7 @@ This key authenticates client-side requests to various Google APIs (Maps, Places
   
 - **Usage and Security Considerations:**
   - Since the `NEXT_PUBLIC_API_KEY` is exposed on the client side, set strict restrictions to prevent misuse.
-  - Regularly monitor the key usage and rotate if any suspicious activity is detected.
+  - Regularly monitor the key usage and rotate it if any suspicious activity is detected.
 
 ---
 
