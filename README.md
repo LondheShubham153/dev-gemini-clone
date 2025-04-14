@@ -25,6 +25,15 @@ Follow this guide to set up a DevSecOps-ready Google Gemini Clone if you cannot 
 - **kubectl**  
 - **aws-cli** (with `aws configure` completed)
 
+>  [!TIP]
+>
+>  If you want a one stop solution to Install above Prerequisites tools follow this guide : https://amitabhdevops.hashnode.dev/how-to-install-essential-devops-tools-on-ubuntulinux
+
+
+---
+
+
+
 ---
 
 ## 1. Create the Kind Cluster
