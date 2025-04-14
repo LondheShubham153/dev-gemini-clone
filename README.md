@@ -4,6 +4,10 @@
 
 An advanced Gemini Clone built with Next.js, featuring enhanced functionality and faster response times.
 
+> [!NOTE]
+>
+>  To read more about this Google Gemini Clone like it's Chat Functionality, Advanced Features and Technology Stack, for that Read this [ABOUT_APP.md](ABOUT_APP.md) file.
+
 ---
 
 ## Purpose
