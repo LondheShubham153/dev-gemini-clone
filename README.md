@@ -38,7 +38,7 @@ Follow this guide to set up a DevSecOps-ready Google Gemini Clone if you cannot 
 
 
 >  [!TIP]
->  If you are Windows user and do not know how to get Linux/Ubuntu in your VSCode, then don't worry follow this guide : [Setting up Linux/Ubuntu in Windows VSCode](https://amitabhdevops.hashnode.dev/a-step-by-step-guide-to-adding-ubuntu-wsl-in-vs-code-terminal)
+>  If you are Windows user and don't know how to get Linux/Ubuntu in your VSCode, then don't worry follow this guide : [Setting up Linux/Ubuntu in Windows VSCode](https://amitabhdevops.hashnode.dev/a-step-by-step-guide-to-adding-ubuntu-wsl-in-vs-code-terminal)
 
 ---
 
