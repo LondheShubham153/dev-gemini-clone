@@ -53,6 +53,7 @@ Follow this guide to set up a DevSecOps-ready Google Gemini Clone if you cannot 
 
 Create your cluster using the following command with your custom configuration (stored in `kind-config.yml`):
 
+
 ```bash
 kind create cluster --name gemini-cluster --config kind-config.yml
 ```
