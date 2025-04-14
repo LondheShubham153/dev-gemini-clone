@@ -213,3 +213,345 @@ Click **Create App**. Once the application is healthy, you can access it at `<IN
 - The Ingress configuration specifies the host and TLS settings to use `<INSTANCE_PUBLIC_IP>.nip.io`.
 
 ---
+
+
+# Jenkins Master & Agent Setup with Terraform for Advanced Gemini CI/CD Pipeline
+
+
+## 1. Provisioning EC2 Instances with Terraform
+
+1. **Navigate to your Terraform directory.**
+
+2. **Generate an SSH key for the EC2 instances:**  
+   Run the following command and specify the key name as `gemini-instance-key` (or enter your own name).  
+   ```bash
+   ssh-keygen
+   ```  
+   Once generated, update the key name in `/terraform/variable.tf` accordingly.
+
+3. **Initialize Terraform:**
+   ```bash
+   terraform init
+   ```
+
+4. **Preview the Terraform execution plan:**
+   ```bash
+   terraform plan
+   ```
+
+5. **Apply the Terraform plan:**  
+   This will create two EC2 instances (one for the Jenkins Master and one for the Jenkins Agent) in the eu-west-1 region.
+   ```bash
+   terraform apply --auto-approve
+   ```
+
+6. **Connect to both instances via SSH.**
+
+---
+
+## 2. Update & Configure Each EC2 Instance
+
+### Step 2.1: Update System Packages  
+Run the following on both instances:
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+### Step 2.2: Install Java (OpenJDK 17)  
+Install Java (required by Jenkins) on each instance:
+```bash
+sudo apt install openjdk-17-jre -y
+java -version
+```
+
+---
+
+## 3. Installing Jenkins on the Master Instance
+
+### Step 3.1: Install Dependencies  
+Install necessary dependencies:
+```bash
+sudo apt-get install -y ca-certificates curl gnupg
+```
+
+### Step 3.2: Add the Jenkins Repository Key and Repository
+```bash
+curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian binary/ | \
+  sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+```
+
+### Step 3.3: Install Jenkins
+```bash
+sudo apt-get update
+sudo apt-get install jenkins -y
+```
+
+### Step 3.4: Enable and Start Jenkins
+```bash
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+```
+
+Verify that Jenkins is running:
+```bash
+sudo systemctl status jenkins
+```
+
+---
+
+## 4. Installing Docker on Both Instances
+
+### Step 4.1: Install Docker
+```bash
+sudo apt install docker.io -y
+```
+
+### Step 4.2: Add the Current User to the Docker Group
+```bash
+sudo usermod -aG docker $USER
+```
+
+**Refresh your group membership:**
+```bash
+newgrp docker
+```
+
+---
+
+## 5. Accessing the Jenkins Master
+
+1. **Access Jenkins UI:**  
+   Navigate to `http://<MASTER_PUBLIC_IP>:8080` in your browser.
+
+2. **Retrieve the Jenkins Admin Password:**  
+   Run the following command on the Jenkins Master:
+   ```bash
+   sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+   ```
+
+3. **Complete the Setup:**  
+   Use the retrieved password to set up your admin account and install the suggested plugins.
+
+---
+
+## 6. Configure the Jenkins Agent
+
+### Step 6.1: Generate an SSH Key on the Jenkins Master for the Agent  
+Run on the Jenkins Master (hit enter for default options):
+```bash
+ssh-keygen
+```
+
+### Step 6.2: Copy the Public Key to the Agent  
+1. On the Jenkins Master, navigate to the `~/.ssh` directory and locate the generated `.pub` file.  
+2. On the Jenkins Agent, navigate to the `~/.ssh` directory.  
+3. Append the public key from the master to the Agent’s `authorized_keys` file.
+
+### Step 6.3: Transfer the Private Key  
+Copy the corresponding private key from the Jenkins Master (located in `~/.ssh`) for use when configuring the Jenkins Agent in the Jenkins UI.
+
+### Step 6.4: Configure the Jenkins Agent in Jenkins
+1. Log in to the Jenkins UI and navigate to **Manage Jenkins > Manage Nodes and Clouds**.
+2. Click **New Node** and provide a name (e.g., `Gemini-server`), then choose **Permanent Agent**.
+3. **Configure Node Settings:**
+   - **Executors:** 2 (to allow parallel execution when CI completes).
+   - **Remote Root Directory:** `/home/ubuntu/gemini`
+   - **Labels:** `dev-server`
+   - **Usage:** Select "Only build jobs with label expressions matching this node."
+4. **Launch Method:** Choose "Launch agents via SSH."
+   - **Host:** Enter the Public IP of your Jenkins Agent instance.
+   - **Credentials:**  
+     - Add a new credential of type **SSH Username with Private Key**.
+     - Use `ubuntu` as the username.
+     - Paste the private key copied from the Jenkins Master.
+   - **Host Key Verification Strategy:** Select **Non verifying Verification Strategy**.
+   - **Availability:** Set to "Keep this agent online as much as possible."
+5. **Save the configuration.**  
+   After a successful connection, running `ls` in the agent's remote root (`/home/ubuntu/gemini`) should list a `gemini` directory.
+
+---
+
+## 7. Installing Jenkins Plugins
+
+### Recommended Plugins  
+Install the following plugins from **Manage Jenkins > Plugin Manager** and choose "Restart Jenkins when installation is complete and no jobs are running":
+1. **OWASP Dependency-Check**
+2. **SonarQube Scanner**
+3. **Sonar Quality GatesVersion**
+4. **Pipeline: Stage View**
+
+---
+
+## 8. Setting Up the Jenkins Shared Library
+
+1. **Fork the Shared Library Repository:**  
+   Fork [Jenkins-shared-libraries](https://github.com/Amitabh-DevOps/Jenkins-shared-libraries.git) to your GitHub account.
+
+2. **Configure Global Trusted Pipeline Libraries in Jenkins:**
+   - Navigate to **Manage Jenkins > System > Global Trusted Pipeline Libraries**.
+   - Click **Add** under Global Pipeline Libraries.
+   - **Library Configuration:**
+     - **Name:** `Shared` (to match `@Library('Shared')` in your Jenkinsfile).
+     - **Default Version:** `main`
+     - **Retrieval Method:** Modern SCM
+     - **Source Code Management:** Choose Git and enter your fork’s repository URL:  
+       `https://github.com/<YOUR_GITHUB_USERNAME>/Jenkins-shared-library.git`
+     - Add credentials if your repository is private.
+   - **Save the configuration.**
+
+---
+
+## 9. Integrating SonarQube & Trivy
+
+### Step 9.1: Run SonarQube in a Container (Master Instance)
+```bash
+docker run -itd --name SonarQube-Server -p 9000:9000 sonarqube:lts-community
+```
+
+Access SonarQube via `http://<MASTER_PUBLIC_IP>:9000`.  
+Use username `admin` (and change the password later).
+
+### Step 9.2: Configure SonarQube in Jenkins
+
+#### **Generate a SonarQube Token:**  
+1. Log in to SonarQube.
+2. Navigate to **Administration → Security → Users → Token**.
+3. Use the following images as references during token creation:
+
+   ![image](https://github.com/user-attachments/assets/86ad8284-5da6-4048-91fe-ac20c8e4514a)  
+   ![image](https://github.com/user-attachments/assets/6bc671a5-c122-45c0-b1f0-f29999bbf751)  
+   ![image](https://github.com/user-attachments/assets/e748643a-e037-4d4c-a9be-944995979c60)
+
+#### **Add SonarQube Credentials in Jenkins:**  
+- Go to **Manage Jenkins > Credentials** and add the SonarQube token as a new credential. Use the following image as a reference:
+
+   ![image](https://github.com/user-attachments/assets/0688e105-2170-4c3f-87a3-128c1a05a0b8)
+
+#### **Configure SonarQube Scanner and Installation in Jenkins:**  
+- Navigate to **Manage Jenkins > Tools > SonarQube Scanner** and then to **Manage Jenkins > System > SonarQube installations**. Use this image as a guide:
+
+   ![image](https://github.com/user-attachments/assets/2fdc1e56-f78c-43d2-914a-104ec2c8ea86)  
+   ![image](https://github.com/user-attachments/assets/ae866185-cb2b-4e83-825b-a125ec97243a)
+
+#### **Configure SonarQube Webhook:**  
+- Log in to SonarQube, go to **Administration → Webhook** and click **Create**. Refer to the images below:
+
+   ![image](https://github.com/user-attachments/assets/16527e72-6691-4fdf-a8d2-83dd27a085cb)  
+   ![image](https://github.com/user-attachments/assets/a8b45948-766a-49a4-b779-91ac3ce0443c)
+
+### Step 9.3: Install Trivy on the Jenkins Worker (Agent Instance)
+```bash
+sudo apt-get install wget apt-transport-https gnupg lsb-release -y
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+sudo apt-get update -y
+sudo apt-get install trivy -y
+```
+
+---
+
+## 10. Configuring Email Notifications in Jenkins
+
+### Step 10.1: Generate an Application Password from Gmail
+- Log in to your Gmail account and go to **Manage your Google Account → Security**.  
+- Ensure that 2-Step Verification is enabled.  
+- Create an **App Password** for Jenkins. Use the image below for reference:
+
+   ![image](https://github.com/user-attachments/assets/5ab9dc9d-dcce-4f9d-9908-01095f1253cb)
+
+- Then, generate the App Password for Jenkins. Refer to these images:
+
+   ![image](https://github.com/user-attachments/assets/701752da-7703-4685-8f06-fe1f65dd1b9c)  
+   ![image](https://github.com/user-attachments/assets/adc8d8c0-8be4-4319-9042-4115abb5c6fc)
+
+### Step 10.2: Add Email Credentials in Jenkins
+- Navigate to **Manage Jenkins > Credentials** and add a new credential (Username with password) for email notifications using your Gmail address and the generated App Password. Reference:
+
+   ![image](https://github.com/user-attachments/assets/2a42ec62-87c8-43c8-a034-7be0beb8824e)
+
+### Step 10.3: Configure Extended E-mail Notification
+- Go to **Manage Jenkins > System** and search for **Extended E-mail Notification**. Configure the settings under the **Advanced** section with your Gmail App Password. See the images below:
+
+   ![image](https://github.com/user-attachments/assets/bac81e24-bb07-4659-a251-955966feded8)  
+
+- <b>Scroll down and search for <mark>E-mail Notification</mark> and setup email notification</b>
+
+> [!Important]
+> Enter your gmail password which we copied recently in password field <mark>E-mail Notification --> Advance</mark>
+
+   ![image](https://github.com/user-attachments/assets/14e254fc-1400-457e-b3f4-046404b66950)  
+   ![image](https://github.com/user-attachments/assets/7be70b3a-b0dc-415c-838a-b1c6fd87c182)  
+   ![image](https://github.com/user-attachments/assets/cffb6e1d-4838-483e-97e0-6851c204ab21)
+
+---
+
+## 11. Adding Additional Credentials in Jenkins
+
+### 11.1: Set Up Docker Hub Credentials in Jenkins
+- Navigate to **Manage Jenkins > Security > Credentials > System > Global credentials (unrestricted)**.
+- Click **Add Credentials**.
+- Set the Kind to **Username with password**.
+- Enter an ID as `dockerHub`.
+- Add your Docker Hub username and a Personal Access Token (PAT) as the password.
+
+### 11.2: Set Up GitHub Credentials in Jenkins
+- Again, navigate to **Manage Jenkins > Security > Credentials > System > Global credentials (unrestricted)**.
+- Click **Add Credentials**.
+- Set the Kind to **Username with password**.
+- Enter an ID as `Github`.
+- Add your GitHub username and a GitHub Personal Access Token as the password.
+
+### 11.3: Set Up .env.local Credentials in Jenkins
+- Navigate to **Manage Jenkins > Security > Credentials > System > Global credentials (unrestricted)**.
+- Click **Add Credentials**.
+- Set the Kind to **Secret file**.
+- Enter an ID as `.env.local`.
+- Upload your `.env.local` file and save.
+
+---
+
+## 12. Creating Jenkins Pipeline Jobs
+
+### 12.1: Create a CI Pipeline Job (`Gemini-CI`)
+1. From the Jenkins dashboard, click **New Item**.
+2. Enter the name `Gemini-CI`, select **Pipeline**, and click **OK**.
+3. **General Section:**  
+   - Check **GitHub project** and provide the repository URL.
+4. **Pipeline Section:**
+   - Select **Pipeline script from SCM**.
+   - Set **SCM** to Git and provide the repository URL.
+   - Add GitHub credentials if the repository is private.
+   - Choose the `kind` branch and set **Script Path** to `Jenkinsfile`.
+
+### 12.2: Create a CD Pipeline Job (`Gemini-CD`)
+1. From the Jenkins dashboard, click **New Item**.
+2. Enter the name `Gemini-CD`, select **Pipeline**, and click **OK**.
+3. **General Section:**  
+   - Check **GitHub project** and provide the repository URL.
+4. **Pipeline Section:**
+   - Select **Pipeline script from SCM**.
+   - Set **SCM** to Git and provide the repository URL.
+   - Add GitHub credentials if necessary.
+   - Choose the `kind` branch and set **Script Path** to `GitOps/Jenkinsfile`.
+
+---
+
+## 13. Final Pipeline Execution
+
+- **Trigger the Gemini-CI job:**  
+  Run this job (even though it is parameterized) for the first time. Subsequent triggers will prompt for parameters.
+- **Automated CD Trigger:**  
+  When the `Gemini-CI` job completes successfully, the `Gemini-CD` job is automatically triggered. This job will update the application image version in the `gemini-deployment`, push the changes to GitHub, and trigger ArgoCD to update the deployment.
+
+> **Note:**  
+> The first run of the OWASP Dependency Check may take 20–25 minutes to download required resources; subsequent runs should complete in under a minute.
+
+---
+
+## 14. Observability Setup
+
+After your CI/CD pipeline is in place, proceed with setting up observability tools to monitor application performance and security.
+
+---
