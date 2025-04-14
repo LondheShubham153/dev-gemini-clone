@@ -85,7 +85,7 @@ stages {
 }
 post {
     success {
-        archiveArtifacts artifacts: 'kubernetes/gemini-deployment.yml', followSymlinks: false
+        archiveArtifacts artifacts: 'kind/gemini-deployment.yml', followSymlinks: false
         build job: "Gemini-CD", parameters: [
             string(name: 'GEMINI_DOCKER_TAG', value: "${params.GEMINI_DOCKER_TAG}"),
             string(name: 'DOCKER_IMAGE_NAME', value: "${DOCKER_IMAGE_NAME}"),
