@@ -478,8 +478,8 @@ sudo apt-get install trivy -y
 
 - <b>Scroll down and search for <mark>E-mail Notification</mark> and setup email notification</b>
 
-   > [!Important]
-   > Enter your gmail password which we copied recently in password field <mark>E-mail Notification --> Advance</mark>
+> [!Important]
+   > Enter your gmail password which we copied recently in password field  <mark>E-mail Notification --> Advance</mark>
 
    ![image](https://github.com/user-attachments/assets/14e254fc-1400-457e-b3f4-046404b66950)  
    ![image](https://github.com/user-attachments/assets/7be70b3a-b0dc-415c-838a-b1c6fd87c182)  
