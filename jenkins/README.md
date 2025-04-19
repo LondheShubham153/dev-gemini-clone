@@ -28,8 +28,13 @@ controller:
     - kubernetes
     - workflow-aggregator
     - git
+    - configuration-as-code
     - credentials-binding
     - blueocean
+    - owasp-dependency-check:1.7.0
+    - sonar:2.13.1
+    - quality-gates:1.0.3
+    - pipeline-stage-view:2.19
 
   JCasC:
     enabled: true
