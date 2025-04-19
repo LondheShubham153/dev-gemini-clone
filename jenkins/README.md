@@ -74,8 +74,7 @@ helm install jenkins jenkins/jenkins -n jenkins -f values.yaml
 ## 🔑 Get Admin Password
 
 ```bash
-kubectl exec --namespace jenkins -it svc/jenkins -- bash
-cat /run/secrets/chart-admin-password && echo
+kubectl get secret jenkins -n jenkins -o jsonpath="{.data.jenkins-admin-password}" | base64 --decode
 ```
 
 ## 🌐 Port Forward and Access Jenkins UI
