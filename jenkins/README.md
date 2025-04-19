@@ -50,7 +50,9 @@ controller:
 
 agent:
   enabled: true
-  image: jenkins/inbound-agent:alpine
+  image:
+    repository: jenkins/inbound-agent
+    tag: alpine
   resources:
     requests:
       cpu: "100m"
@@ -58,6 +60,7 @@ agent:
     limits:
       cpu: "200m"
       memory: "512Mi"
+
 ```
 
 Save as: `values.yaml`
