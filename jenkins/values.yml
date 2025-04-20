@@ -6,10 +6,7 @@ controller:
     - configuration-as-code
     - credentials-binding
     - blueocean
-    - owasp-dependency-check:1.7.0
-    - sonar:2.13.1
-    - quality-gates:1.0.3
-    - pipeline-stage-view:2.19
+    - pipeline-stage-view
   JCasC:
     enabled: true
     configScripts:
