@@ -82,7 +82,7 @@ kubectl get secret jenkins -n jenkins -o jsonpath="{.data.jenkins-admin-password
 ## 🌐 Port Forward and Access Jenkins UI
 
 ```bash
-kubectl port-forward svc/jenkins -n jenkins 8080:8080
+kubectl port-forward svc/jenkins -n jenkins 8080:8080 --address=0.0.0.0
 # Access: http://localhost:8080
 ```
 
