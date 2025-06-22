@@ -6,7 +6,7 @@ metadata:
   labels:
     app: gemini
 spec:
-  replicas: 10
+  replicas: 5 
   selector:
     matchLabels:
       app: gemini
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: gemini
-        image: amitabhdevops/geminiamit:v3
+        image: trainwithshubham/gemininip:v1
         ports:
         - containerPort: 3000
         resources:

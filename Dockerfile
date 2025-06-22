@@ -4,7 +4,7 @@
 FROM node:18-alpine AS builder
 
 # Add metadata for authorship and app identification
-LABEL maintainer="Amitabh Soni <amitabhdevops2024@gmail.com>" \
+LABEL maintainer="Shubham Londhe <trainwithshubham@gmail.com>" \
       app="gemini" \
       stage="build"
 
@@ -27,7 +27,7 @@ RUN rm -rf node_modules && npm cache clean --force
 FROM node:18-alpine AS production
 
 # Add metadata for the final image
-LABEL maintainer="Amitabh Soni <amitabhdevops2024@gmail.com>" \
+LABEL maintainer="Shubham Londhe <trainwithshubham@gmail.com>" \
       app="gemini" \
       stage="production"
 

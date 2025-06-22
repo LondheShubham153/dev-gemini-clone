@@ -1,0 +1,37 @@
+pipeline {
+    agent {
+        label 'jenkins-jenkins-agent'
+    }
+
+    environment {
+        MY_ENV = "production"
+    }
+
+    stages {
+        stage('Clone Code') {
+            steps {
+                git url: 'https://github.com/LondheShubham153/dev-gemini-clone.git', branch: 'kind'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo "Building application..."
+                sh 'echo Build done!'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Running tests..."
+                sh 'echo Tests passed!'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying to ${MY_ENV} environment"
+            }
+        }
+    }
+}

@@ -1,0 +1,38 @@
+controller:
+  installPlugins:
+    - kubernetes
+    - workflow-aggregator
+    - git
+    - configuration-as-code
+    - credentials-binding
+    - blueocean
+    - pipeline-stage-view
+  JCasC:
+    enabled: true
+    configScripts:
+      welcome-message: |
+        jenkins:
+          systemMessage: "Jenkins running on KinD 🚀"
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "512Mi"
+    limits:
+      cpu: "500m"
+      memory: "1Gi"
+
+  serviceType: ClusterIP
+
+agent:
+  enabled: true
+  image:
+    repository: jenkins/inbound-agent
+    tag: alpine
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "200m"
+      memory: "512Mi"
