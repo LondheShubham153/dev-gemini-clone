@@ -8,9 +8,11 @@ nodes:
     nodeRegistration:
       kubeletExtraArgs:
         node-labels: "ingress-ready=true"
+  - role: worker
+  - role: worker
   extraPortMappings:
   - containerPort: 6443
-    hostPort: 45577
+    hostPort: 4557
     protocol: TCP
     listenAddress: "0.0.0.0"
   - containerPort: 80
@@ -21,6 +23,3 @@ nodes:
     hostPort: 443
     protocol: TCP
     listenAddress: "0.0.0.0"
-- role: worker
-- role: worker
-
